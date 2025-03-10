@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="CubeModel\Models\Cube.Moves.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CubeModel\Models\Cube.Moves.cs" />
+  </ItemGroup>
+
 </Project>

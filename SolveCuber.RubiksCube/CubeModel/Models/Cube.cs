@@ -1,8 +1,8 @@
-﻿using SolveCuber.RubiksCube.Moves;
+﻿using SolveCuber.CubeModel.Moves;
 
-namespace SolveCuber.RubiksCube.Models;
+namespace SolveCuber.CubeModel.Models;
 
-public class Cube
+public partial class Cube()
 {
     public CubeFace Up { get; private set; } = new CubeFace(CubeColor.White);
     public CubeFace Down { get; private set; } = new CubeFace(CubeColor.Yellow);
@@ -11,9 +11,22 @@ public class Cube
     public CubeFace Right { get; private set; } = new CubeFace(CubeColor.Red);
     public CubeFace Left { get; private set; } = new CubeFace(CubeColor.Orange);
 
+    internal Cube GetNewInstance()
+    {
+        return new Cube()
+        {
+            Up = Up.GetNewInstance(),
+            Down = Down.GetNewInstance(),
+            Front = Front.GetNewInstance(),
+            Back = Back.GetNewInstance(),
+            Right = Right.GetNewInstance(),
+            Left = Left.GetNewInstance()
+        };
+    }
+
     public Cube ExecuteMove(CubeMove move)
     {
-        SetCube(MoveExecuter.GetCubeImageAfterMove(this, move));
+        SetCube(MoveExecuter.GetCubeImageAfterMove(GetNewInstance(), move));
 
         return this;
     }

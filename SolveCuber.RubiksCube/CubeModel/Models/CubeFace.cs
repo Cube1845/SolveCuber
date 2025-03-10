@@ -1,8 +1,23 @@
-﻿namespace SolveCuber.RubiksCube.Models;
+﻿namespace SolveCuber.CubeModel.Models;
 
-public class CubeFace
+public struct CubeFace
 {
-    public CubeColor[,] Face { get; private set; }
+    public CubeColor[,] Face { get; set; }
+
+    internal CubeFace GetNewInstance()
+    {
+        CubeFace newFace = new(Face[0, 0]);
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                newFace.Face[i, j] = Face[i, j];
+            }
+        }
+
+        return newFace;
+    }
 
     public CubeFace(CubeColor color)
     {
@@ -15,13 +30,6 @@ public class CubeFace
                 Face[i, j] = color;
             }
         }
-    }
-
-    internal CubeFace SetColor(int x, int y, CubeColor color)
-    {
-        Face[y, x] = color;
-
-        return this;
     }
 
     internal CubeFace RotateClockwise()

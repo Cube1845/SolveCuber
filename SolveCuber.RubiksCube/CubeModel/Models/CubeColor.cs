@@ -1,4 +1,4 @@
-﻿namespace SolveCuber.RubiksCube.Models;
+﻿namespace SolveCuber.CubeModel.Models;
 
 public enum CubeColor
 {

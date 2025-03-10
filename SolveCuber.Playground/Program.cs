@@ -1,8 +1,6 @@
-﻿using SolveCuber.RubiksCube.Models;
+﻿using SolveCuber.CubeModel.Models;
 
 Cube cube = new();
-
-DisplayCube(cube);
 
 cube.ExecuteMove(CubeMove.U);
 
