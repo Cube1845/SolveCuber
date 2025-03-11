@@ -4,7 +4,20 @@ public struct CubeFace
 {
     public CubeColor[,] Face { get; set; }
 
-    internal CubeFace GetNewInstance()
+    public CubeFace(CubeColor color)
+    {
+        Face = new CubeColor[3, 3];
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                Face[i, j] = color;
+            }
+        }
+    }
+
+    internal CubeFace DeepCopy()
     {
         CubeFace newFace = new(Face[0, 0]);
 
@@ -19,27 +32,13 @@ public struct CubeFace
         return newFace;
     }
 
-    public CubeFace(CubeColor color)
+    internal CubeFace RotateClockwise()
     {
-        Face = new CubeColor[3, 3];
+        CubeColor[,] currentFace = (CubeColor[,])Face.Clone();
 
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
-            {
-                Face[i, j] = color;
-            }
-        }
-    }
-
-    internal CubeFace RotateClockwise()
-    {
-        int size = Face.GetLength(0);
-        CubeColor[,] currentFace = Face;
-
-        for (int i = 0; i < size; i++)
-        {
-            for (int j = 0; j < size; j++)
             {
                 Face[i, j] = currentFace[2 - j, i];
             }
@@ -50,12 +49,11 @@ public struct CubeFace
 
     internal CubeFace RotateCounterClockwise()
     {
-        int size = Face.GetLength(0);
-        CubeColor[,] currentFace = Face;
+        CubeColor[,] currentFace = (CubeColor[,])Face.Clone();
 
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < 3; i++)
         {
-            for (int j = 0; j < size; j++)
+            for (int j = 0; j < 3; j++)
             {
                 Face[i, j] = currentFace[j, 2 - i];
             }
@@ -66,12 +64,11 @@ public struct CubeFace
 
     internal CubeFace RotateTwoTimes()
     {
-        int size = Face.GetLength(0);
-        CubeColor[,] currentFace = Face;
+        CubeColor[,] currentFace = (CubeColor[,])Face.Clone();
 
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < 3; i++)
         {
-            for (int j = 0; j < size; j++)
+            for (int j = 0; j < 3; j++)
             {
                 Face[i, j] = currentFace[2 - i, 2 - j];
             }

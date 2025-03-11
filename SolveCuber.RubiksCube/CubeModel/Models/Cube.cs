@@ -1,8 +1,6 @@
-﻿using SolveCuber.CubeModel.Moves;
+﻿namespace SolveCuber.CubeModel.Models;
 
-namespace SolveCuber.CubeModel.Models;
-
-public partial class Cube()
+public partial struct Cube()
 {
     public CubeFace Up { get; private set; } = new CubeFace(CubeColor.White);
     public CubeFace Down { get; private set; } = new CubeFace(CubeColor.Yellow);
@@ -11,33 +9,83 @@ public partial class Cube()
     public CubeFace Right { get; private set; } = new CubeFace(CubeColor.Red);
     public CubeFace Left { get; private set; } = new CubeFace(CubeColor.Orange);
 
-    internal Cube GetNewInstance()
+    internal Cube DeepCopy()
     {
         return new Cube()
         {
-            Up = Up.GetNewInstance(),
-            Down = Down.GetNewInstance(),
-            Front = Front.GetNewInstance(),
-            Back = Back.GetNewInstance(),
-            Right = Right.GetNewInstance(),
-            Left = Left.GetNewInstance()
+            Up = Up.DeepCopy(),
+            Down = Down.DeepCopy(),
+            Front = Front.DeepCopy(),
+            Back = Back.DeepCopy(),
+            Right = Right.DeepCopy(),
+            Left = Left.DeepCopy()
         };
     }
 
-    public Cube ExecuteMove(CubeMove move)
+    public Cube ExecuteAlgorithm(List<CubeMove> algorithm)
     {
-        SetCube(MoveExecuter.GetCubeImageAfterMove(GetNewInstance(), move));
+        foreach (var move in algorithm)
+        {
+            ExecuteMove(move);
+        }
 
         return this;
     }
 
-    private void SetCube(Cube cube)
+    public Cube ExecuteMove(CubeMove move)
     {
-        Up = cube.Up;
-        Down = cube.Down;
-        Front = cube.Front;
-        Back = cube.Back;
-        Right = cube.Right;
-        Left = cube.Left;
+        Action executeMoveFn = move switch
+        {
+            CubeMove.U => ExecuteUpMove,
+            CubeMove.U_ => ExecuteUpPrimeMove,
+            CubeMove.U2 => ExecuteDoubleUpMove,
+            CubeMove.D => ExecuteDownMove,
+            CubeMove.D_ => ExecuteDownPrimeMove,
+            CubeMove.D2 => ExecuteDoubleDownMove,
+            CubeMove.F => ExecuteFrontMove,
+            CubeMove.F_ => ExecuteFrontPrimeMove,
+            CubeMove.F2 => ExecuteDoubleFrontMove,
+            CubeMove.B => ExecuteBackMove,
+            CubeMove.B_ => ExecuteBackPrimeMove,
+            CubeMove.B2 => ExecuteDoubleBackMove,
+            CubeMove.R => ExecuteRightMove,
+            CubeMove.R_ => ExecuteRightPrimeMove,
+            CubeMove.R2 => ExecuteDoubleRightMove,
+            CubeMove.L => ExecuteLeftMove,
+            CubeMove.L_ => ExecuteLeftPrimeMove,
+            CubeMove.L2 => ExecuteDoubleLeftMove,
+            CubeMove.u => ExecuteUpWideMove,
+            CubeMove.u_ => ExecuteUpWidePrimeMove,
+            CubeMove.u2 => ExecuteDoubleUpWideMove,
+            CubeMove.d => ExecuteDownWideMove,
+            CubeMove.d_ => ExecuteDownWidePrimeMove,
+            CubeMove.d2 => ExecuteDoubleDownWideMove,
+            CubeMove.f => ExecuteFrontWideMove,
+            CubeMove.f_ => ExecuteFrontWidePrimeMove,
+            CubeMove.f2 => ExecuteDoubleFrontWideMove,
+            CubeMove.b => ExecuteBackWideMove,
+            CubeMove.b_ => ExecuteBackWidePrimeMove,
+            CubeMove.b2 => ExecuteDoubleBackWideMove,
+            CubeMove.r => ExecuteRightWideMove,
+            CubeMove.r_ => ExecuteRightWidePrimeMove,
+            CubeMove.r2 => ExecuteDoubleRightWideMove,
+            CubeMove.l => ExecuteLeftWideMove,
+            CubeMove.l_ => ExecuteLeftWidePrimeMove,
+            CubeMove.l2 => ExecuteDoubleLeftWideMove,
+            CubeMove.M => ExecuteMiddleMove,
+            CubeMove.M_ => ExecuteMiddlePrimeMove,
+            CubeMove.M2 => ExecuteDoubleMiddleMove,
+            CubeMove.E => ExecuteEquatorMove,
+            CubeMove.E_ => ExecuteEquatorPrimeMove,
+            CubeMove.E2 => ExecuteDoubleEquatorMove,
+            CubeMove.S => ExecuteStandingMove,
+            CubeMove.S_ => ExecuteStandingPrimeMove,
+            CubeMove.S2 => ExecuteDoubleStandingMove,
+            _ => throw new NotImplementedException()
+        };
+
+        executeMoveFn();
+
+        return this;
     }
 }

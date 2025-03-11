@@ -2,7 +2,22 @@
 
 Cube cube = new();
 
-cube.ExecuteMove(CubeMove.U);
+cube.ExecuteAlgorithm
+(
+    [
+        CubeMove.r,
+        CubeMove.U,
+        CubeMove.R_,
+        CubeMove.U_,
+        CubeMove.M2,
+        CubeMove.U,
+        CubeMove.R,
+        CubeMove.U_,
+        CubeMove.R_,
+        CubeMove.U_,
+        CubeMove.M_
+    ]
+);
 
 DisplayCube(cube);
 
