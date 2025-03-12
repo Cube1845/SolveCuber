@@ -5,17 +5,20 @@ Cube cube = new();
 cube.ExecuteAlgorithm
 (
     [
-        CubeMove.r,
-        CubeMove.U,
-        CubeMove.R_,
-        CubeMove.U_,
-        CubeMove.M2,
-        CubeMove.U,
         CubeMove.R,
+        CubeMove.U,
+        CubeMove.R_,
+        CubeMove.U_,
+        CubeMove.R_,
+        CubeMove.F,
+        CubeMove.R2,
         CubeMove.U_,
         CubeMove.R_,
         CubeMove.U_,
-        CubeMove.M_
+        CubeMove.R,
+        CubeMove.U,
+        CubeMove.R_,
+        CubeMove.F_,
     ]
 );
 

@@ -47,19 +47,19 @@ public partial struct Cube
     private void ExecuteFrontMove()
     {
         Front.RotateClockwise();
-        MoveColorsAroundZAxis(2, true);
+        MoveColorsAroundZAxis(0, true);
     }
 
     private void ExecuteFrontPrimeMove()
     {
         Front.RotateCounterClockwise();
-        MoveColorsAroundZAxis(2, false);
+        MoveColorsAroundZAxis(0, false);
     }
 
     private void ExecuteDoubleFrontMove()
     {
         Front.RotateTwoTimes();
-        DoubleMoveColorsAroundZAxis(2);
+        DoubleMoveColorsAroundZAxis(0);
     }
 
     // B moves
@@ -67,19 +67,19 @@ public partial struct Cube
     private void ExecuteBackMove()
     {
         Back.RotateClockwise();
-        MoveColorsAroundZAxis(0, false);
+        MoveColorsAroundZAxis(2, false);
     }
 
     private void ExecuteBackPrimeMove()
     {
         Back.RotateCounterClockwise();
-        MoveColorsAroundZAxis(0, true);
+        MoveColorsAroundZAxis(2, true);
     }
 
     private void ExecuteDoubleBackMove()
     {
         Back.RotateTwoTimes();
-        DoubleMoveColorsAroundZAxis(0);
+        DoubleMoveColorsAroundZAxis(2);
     }
 
     // L moves
@@ -170,21 +170,21 @@ public partial struct Cube
     private void ExecuteFrontWideMove()
     {
         Front.RotateClockwise();
-        MoveColorsAroundZAxis(2, true);
+        MoveColorsAroundZAxis(0, true);
         MoveColorsAroundZAxis(1, true);
     }
 
     private void ExecuteFrontWidePrimeMove()
     {
         Front.RotateCounterClockwise();
-        MoveColorsAroundZAxis(2, false);
+        MoveColorsAroundZAxis(0, false);
         MoveColorsAroundZAxis(1, false);
     }
 
     private void ExecuteDoubleFrontWideMove()
     {
         Front.RotateTwoTimes();
-        DoubleMoveColorsAroundZAxis(2);
+        DoubleMoveColorsAroundZAxis(0);
         DoubleMoveColorsAroundZAxis(1);
     }
 
@@ -192,21 +192,21 @@ public partial struct Cube
     private void ExecuteBackWideMove()
     {
         Back.RotateClockwise();
-        MoveColorsAroundZAxis(0, false);
+        MoveColorsAroundZAxis(2, false);
         MoveColorsAroundZAxis(1, false);
     }
 
     private void ExecuteBackWidePrimeMove()
     {
         Back.RotateCounterClockwise();
-        MoveColorsAroundZAxis(0, true);
+        MoveColorsAroundZAxis(2, true);
         MoveColorsAroundZAxis(1, true);
     }
 
     private void ExecuteDoubleBackWideMove()
     {
         Back.RotateTwoTimes();
-        DoubleMoveColorsAroundZAxis(0);
+        DoubleMoveColorsAroundZAxis(2);
         DoubleMoveColorsAroundZAxis(1);
     }
 
@@ -363,13 +363,13 @@ public partial struct Cube
             Front.Face[1, x] = originalCubeState.Up.Face[1, x];
             Front.Face[2, x] = originalCubeState.Up.Face[2, x];
 
-            Up.Face[0, x] = originalCubeState.Back.Face[0, 2 - x];
+            Up.Face[0, x] = originalCubeState.Back.Face[2, 2 - x];
             Up.Face[1, x] = originalCubeState.Back.Face[1, 2 - x];
-            Up.Face[2, x] = originalCubeState.Back.Face[2, 2 - x];
+            Up.Face[2, x] = originalCubeState.Back.Face[0, 2 - x];
 
-            Back.Face[0, 2 - x] = originalCubeState.Down.Face[0, x];
+            Back.Face[2, 2 - x] = originalCubeState.Down.Face[0, x];
             Back.Face[1, 2 - x] = originalCubeState.Down.Face[1, x];
-            Back.Face[2, 2 - x] = originalCubeState.Down.Face[2, x];
+            Back.Face[0, 2 - x] = originalCubeState.Down.Face[2, x];
         }
         else
         {
@@ -381,13 +381,13 @@ public partial struct Cube
             Up.Face[1, x] = originalCubeState.Front.Face[1, x];
             Up.Face[2, x] = originalCubeState.Front.Face[2, x];
 
-            Back.Face[0, 2 - x] = originalCubeState.Up.Face[0, x];
+            Back.Face[2, 2 - x] = originalCubeState.Up.Face[0, x];
             Back.Face[1, 2 - x] = originalCubeState.Up.Face[1, x];
-            Back.Face[2, 2 - x] = originalCubeState.Up.Face[2, x];
+            Back.Face[0, 2 - x] = originalCubeState.Up.Face[2, x];
 
-            Down.Face[0, x] = originalCubeState.Back.Face[0, 2 - x];
+            Down.Face[0, x] = originalCubeState.Back.Face[2, 2 - x];
             Down.Face[1, x] = originalCubeState.Back.Face[1, 2 - x];
-            Down.Face[2, x] = originalCubeState.Back.Face[2, 2 - x];
+            Down.Face[2, x] = originalCubeState.Back.Face[0, 2 - x];
         }
     }
 
@@ -398,39 +398,39 @@ public partial struct Cube
 
         if (clockwise)
         {
-            Up.Face[z, 0] = originalCubeState.Left.Face[0, z];
-            Up.Face[z, 1] = originalCubeState.Left.Face[1, z];
-            Up.Face[z, 2] = originalCubeState.Left.Face[2, z];
+            Up.Face[2 - z, 0] = originalCubeState.Left.Face[2, 2 - z];
+            Up.Face[2 - z, 1] = originalCubeState.Left.Face[1, 2 - z];
+            Up.Face[2 - z, 2] = originalCubeState.Left.Face[0, 2 - z];
 
-            Left.Face[0, z] = originalCubeState.Down.Face[2 - z, 0];
-            Left.Face[1, z] = originalCubeState.Down.Face[2 - z, 1];
-            Left.Face[2, z] = originalCubeState.Down.Face[2 - z, 2];
+            Left.Face[0, 2 - z] = originalCubeState.Down.Face[z, 0];
+            Left.Face[1, 2 - z] = originalCubeState.Down.Face[z, 1];
+            Left.Face[2, 2 - z] = originalCubeState.Down.Face[z, 2];
 
-            Down.Face[2 - z, 0] = originalCubeState.Right.Face[0, 2 - z];
-            Down.Face[2 - z, 1] = originalCubeState.Right.Face[1, 2 - z];
-            Down.Face[2 - z, 2] = originalCubeState.Right.Face[2, 2 - z];
+            Down.Face[z, 0] = originalCubeState.Right.Face[2, z];
+            Down.Face[z, 1] = originalCubeState.Right.Face[1, z];
+            Down.Face[z, 2] = originalCubeState.Right.Face[0, z];
 
-            Right.Face[0, 2 - z] = originalCubeState.Up.Face[z, 0];
-            Right.Face[1, 2 - z] = originalCubeState.Up.Face[z, 1];
-            Right.Face[2, 2 - z] = originalCubeState.Up.Face[z, 2];
+            Right.Face[0, z] = originalCubeState.Up.Face[2 - z, 0];
+            Right.Face[1, z] = originalCubeState.Up.Face[2 - z, 1];
+            Right.Face[2, z] = originalCubeState.Up.Face[2 - z, 2];
         }
         else
         {
-            Left.Face[0, z] = originalCubeState.Up.Face[z, 0];
-            Left.Face[1, z] = originalCubeState.Up.Face[z, 1];
-            Left.Face[2, z] = originalCubeState.Up.Face[z, 2];
+            Left.Face[0, 2 - z] = originalCubeState.Up.Face[2 - z, 2];
+            Left.Face[1, 2 - z] = originalCubeState.Up.Face[2 - z, 1];
+            Left.Face[2, 2 - z] = originalCubeState.Up.Face[2 - z, 0];
 
-            Down.Face[2 - z, 0] = originalCubeState.Left.Face[0, z];
-            Down.Face[2 - z, 1] = originalCubeState.Left.Face[1, z];
-            Down.Face[2 - z, 2] = originalCubeState.Left.Face[2, z];
+            Down.Face[z, 0] = originalCubeState.Left.Face[0, 2 - z];
+            Down.Face[z, 1] = originalCubeState.Left.Face[1, 2 - z];
+            Down.Face[z, 2] = originalCubeState.Left.Face[2, 2 - z];
 
-            Right.Face[0, 2 - z] = originalCubeState.Down.Face[2 - z, 0];
-            Right.Face[1, 2 - z] = originalCubeState.Down.Face[2 - z, 1];
-            Right.Face[2, 2 - z] = originalCubeState.Down.Face[2 - z, 2];
+            Right.Face[0, z] = originalCubeState.Down.Face[z, 2];
+            Right.Face[1, z] = originalCubeState.Down.Face[z, 1];
+            Right.Face[2, z] = originalCubeState.Down.Face[z, 0];
 
-            Up.Face[z, 0] = originalCubeState.Right.Face[0, 2 - z];
-            Up.Face[z, 1] = originalCubeState.Right.Face[1, 2 - z];
-            Up.Face[z, 2] = originalCubeState.Right.Face[2, 2 - z];
+            Up.Face[2 - z, 0] = originalCubeState.Right.Face[0, z];
+            Up.Face[2 - z, 1] = originalCubeState.Right.Face[1, z];
+            Up.Face[2 - z, 2] = originalCubeState.Right.Face[2, z];
         }
     }
 
@@ -467,33 +467,33 @@ public partial struct Cube
         Down.Face[1, x] = originalCubeState.Up.Face[1, x];
         Down.Face[2, x] = originalCubeState.Up.Face[2, x];
 
-        Front.Face[0, x] = originalCubeState.Back.Face[0, x];
-        Front.Face[1, x] = originalCubeState.Back.Face[1, x];
-        Front.Face[2, x] = originalCubeState.Back.Face[2, x];
+        Front.Face[0, x] = originalCubeState.Back.Face[2, 2 - x];
+        Front.Face[1, x] = originalCubeState.Back.Face[1, 2 - x];
+        Front.Face[2, x] = originalCubeState.Back.Face[0, 2 - x];
 
-        Back.Face[0, x] = originalCubeState.Front.Face[0, x];
-        Back.Face[1, x] = originalCubeState.Front.Face[1, x];
-        Back.Face[2, x] = originalCubeState.Front.Face[2, x];
+        Back.Face[2, 2 - x] = originalCubeState.Front.Face[0, x];
+        Back.Face[1, 2 - x] = originalCubeState.Front.Face[1, x];
+        Back.Face[0, 2 - x] = originalCubeState.Front.Face[2, x];
     }
 
     private void DoubleMoveColorsAroundZAxis(int z)
     {
         var originalCubeState = DeepCopy();
 
-        Up.Face[z, 0] = originalCubeState.Down.Face[2 - z, 0];
-        Up.Face[z, 1] = originalCubeState.Down.Face[2 - z, 1];
-        Up.Face[z, 2] = originalCubeState.Down.Face[2 - z, 2];
+        Up.Face[2 - z, 0] = originalCubeState.Down.Face[z, 2];
+        Up.Face[2 - z, 1] = originalCubeState.Down.Face[z, 1];
+        Up.Face[2 - z, 2] = originalCubeState.Down.Face[z, 0];
 
-        Down.Face[2 - z, 0] = originalCubeState.Up.Face[z, 0];
-        Down.Face[2 - z, 1] = originalCubeState.Up.Face[z, 1];
-        Down.Face[2 - z, 2] = originalCubeState.Up.Face[z, 2];
+        Down.Face[z, 0] = originalCubeState.Up.Face[2 - z, 2];
+        Down.Face[z, 1] = originalCubeState.Up.Face[2 - z, 1];
+        Down.Face[z, 2] = originalCubeState.Up.Face[2 - z, 0];
 
-        Left.Face[0, z] = originalCubeState.Right.Face[0, 2 - z];
-        Left.Face[1, z] = originalCubeState.Right.Face[1, 2 - z];
-        Left.Face[2, z] = originalCubeState.Right.Face[2, 2 - z];
+        Left.Face[0, 2 - z] = originalCubeState.Right.Face[2, z];
+        Left.Face[1, 2 - z] = originalCubeState.Right.Face[1, z];
+        Left.Face[2, 2 - z] = originalCubeState.Right.Face[0, z];
 
-        Right.Face[0, 2 - z] = originalCubeState.Left.Face[0, z];
-        Right.Face[1, 2 - z] = originalCubeState.Left.Face[1, z];
-        Right.Face[2, 2 - z] = originalCubeState.Left.Face[2, z];
+        Right.Face[0, z] = originalCubeState.Left.Face[2, 2 - z];
+        Right.Face[1, z] = originalCubeState.Left.Face[1, 2 - z];
+        Right.Face[2, z] = originalCubeState.Left.Face[0, 2 - z];
     }
 }
