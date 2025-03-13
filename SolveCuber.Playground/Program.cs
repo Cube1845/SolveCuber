@@ -1,31 +1,16 @@
 ﻿using SolveCuber.CubeModel;
 using SolveCuber.CubeModel.Models;
+using SolveCuber.Scramble;
 
 Cube cube = new();
 
-//cube.ExecuteAlgorithm
-//([
-//    CubeMove.R,
-//    CubeMove.U,
-//    CubeMove.R_,
-//    CubeMove.U_,
-//    CubeMove.R_,
-//    CubeMove.F,
-//    CubeMove.R2,
-//    CubeMove.U_,
-//    CubeMove.R_,
-//    CubeMove.U_,
-//    CubeMove.R,
-//    CubeMove.U,
-//    CubeMove.R_,
-//    CubeMove.F_,
-//]);
+var scramble = Scrambler.ScrambleCube(cube);
 
-displayScramble(cube.ScrambleCube());
+DisplayScramble(scramble);
 
 DisplayCube(cube);
 
-void displayScramble(List<CubeMove> scramble)
+void DisplayScramble(List<CubeMove> scramble)
 {
     Console.Write("\nScramble: ");
 
