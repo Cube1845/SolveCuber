@@ -1,28 +1,41 @@
-﻿using SolveCuber.CubeModel.Models;
+﻿using SolveCuber.CubeModel;
+using SolveCuber.CubeModel.Models;
 
 Cube cube = new();
 
-cube.ExecuteAlgorithm
-(
-    [
-        CubeMove.R,
-        CubeMove.U,
-        CubeMove.R_,
-        CubeMove.U_,
-        CubeMove.R_,
-        CubeMove.F,
-        CubeMove.R2,
-        CubeMove.U_,
-        CubeMove.R_,
-        CubeMove.U_,
-        CubeMove.R,
-        CubeMove.U,
-        CubeMove.R_,
-        CubeMove.F_,
-    ]
-);
+//cube.ExecuteAlgorithm
+//([
+//    CubeMove.R,
+//    CubeMove.U,
+//    CubeMove.R_,
+//    CubeMove.U_,
+//    CubeMove.R_,
+//    CubeMove.F,
+//    CubeMove.R2,
+//    CubeMove.U_,
+//    CubeMove.R_,
+//    CubeMove.U_,
+//    CubeMove.R,
+//    CubeMove.U,
+//    CubeMove.R_,
+//    CubeMove.F_,
+//]);
+
+displayScramble(cube.ScrambleCube());
 
 DisplayCube(cube);
+
+void displayScramble(List<CubeMove> scramble)
+{
+    Console.Write("\nScramble: ");
+
+    foreach (var move in scramble)
+    {
+        Console.Write(move.ToString() + ", ");
+    }
+
+    Console.Write("\n");
+}
 
 void DisplayCube(Cube cube)
 {

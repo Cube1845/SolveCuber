@@ -1,4 +1,6 @@
-﻿namespace SolveCuber.CubeModel.Models;
+﻿using SolveCuber.Scramble;
+
+namespace SolveCuber.CubeModel.Models;
 
 public partial struct Cube()
 {
@@ -30,6 +32,17 @@ public partial struct Cube()
         }
 
         return this;
+    }
+
+    private readonly int _scrambleLength = 20;
+
+    public List<CubeMove> ScrambleCube()
+    {
+        var scramble = ScrambleGenerator.GenerateScramble(_scrambleLength);
+
+        ExecuteAlgorithm(scramble);
+
+        return scramble;
     }
 
     public Cube ExecuteMove(CubeMove move)
