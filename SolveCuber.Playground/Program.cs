@@ -1,12 +1,15 @@
 ﻿using SolveCuber.CubeModel;
 using SolveCuber.CubeModel.Models;
 using SolveCuber.Scramble;
+using SolveCuber.Solver.WhiteCross;
 
 Cube cube = new();
 
 var scramble = Scrambler.ScrambleCube(cube);
 
 DisplayScramble(scramble);
+
+WhiteCrossSolver.SolveCross(cube);
 
 DisplayCube(cube);
 
