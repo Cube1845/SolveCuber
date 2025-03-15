@@ -1,6 +1,5 @@
 ﻿using SolveCuber.CubeModel;
 using SolveCuber.CubeModel.Models;
-using System.Drawing;
 
 namespace SolveCuber.Solver.WhiteCross;
 
@@ -8,9 +7,24 @@ public static class WhiteCrossSolver
 {
     public static List<CubeMove> SolveCross(Cube cube)
     {
-        var whiteEdgesData = GetWhiteEdgeLocations(cube);
+        WhiteEdgesData whiteEdgesData = GetWhiteEdgeLocations(cube);
 
-        return [];
+        if (IsCrossSolved(whiteEdgesData))
+        {
+            return [];
+        }
+
+
+
+        return GetGreenWhiteEdgePositioningMoves(whiteEdgesData.Green!.Value);
+    }
+
+    private static bool IsCrossSolved(WhiteEdgesData edgesData)
+    {
+        return edgesData.Green == null &&
+            edgesData.Orange == null &&
+            edgesData.Red == null &&
+            edgesData.Blue == null;
     }
 
     private static WhiteEdgesData GetWhiteEdgeLocations(Cube cube)
@@ -29,17 +43,33 @@ public static class WhiteCrossSolver
                 switch (flattenedEdgeColors[((int)secondLocation) - 1])
                 {
                     case CubeColor.Green:
-                        edgesData.Green = location;
+                        if (location != WhiteEdgeLocation.UpFront)
+                        {
+                            edgesData.Green = location;
+                        }
                         break;
+
                     case CubeColor.Orange:
-                        edgesData.Orange = location;
+                        if (location != WhiteEdgeLocation.UpLeft)
+                        {
+                            edgesData.Orange = location;
+                        }
                         break;
+
                     case CubeColor.Red:
-                        edgesData.Red = location;
+                        if (location != WhiteEdgeLocation.UpRight)
+                        {
+                            edgesData.Red = location;
+                        }
                         break;
+
                     case CubeColor.Blue:
-                        edgesData.Blue = location;
+                        if (location != WhiteEdgeLocation.UpBack)
+                        {
+                            edgesData.Blue = location;
+                        }
                         break;
+
                     default:
                         throw new NotImplementedException();
                 }
@@ -74,6 +104,39 @@ public static class WhiteCrossSolver
             face.Face[1, 2],
             face.Face[2, 1]
         ];
+    }
+
+    private static List<CubeMove> GetGreenWhiteEdgePositioningMoves(WhiteEdgeLocation edgeLocation)
+    {
+        return edgeLocation switch
+        {
+            WhiteEdgeLocation.DownFront => [CubeMove.F2],
+            WhiteEdgeLocation.DownLeft => [CubeMove.D, CubeMove.F2],
+            WhiteEdgeLocation.DownRight => [CubeMove.D_, CubeMove.F2],
+            WhiteEdgeLocation.DownBack => [CubeMove.D2, CubeMove.F2],
+
+            WhiteEdgeLocation.FrontUp => [CubeMove.F, CubeMove.U_, CubeMove.R, CubeMove.U],
+            WhiteEdgeLocation.FrontLeft => [CubeMove.U, CubeMove.L_, CubeMove.U_],
+            WhiteEdgeLocation.FrontRight => [CubeMove.U_, CubeMove.R, CubeMove.U],
+            WhiteEdgeLocation.FrontDown => [CubeMove.F_, CubeMove.U_, CubeMove.R, CubeMove.U],
+
+            WhiteEdgeLocation.BackUp => [CubeMove.B_, CubeMove.U2, CubeMove.B, CubeMove.U2],
+            WhiteEdgeLocation.BackRight => [CubeMove.U_, CubeMove.R_, CubeMove.U],
+            WhiteEdgeLocation.BackLeft => [CubeMove.U, CubeMove.L, CubeMove.U_],
+            WhiteEdgeLocation.BackDown => [CubeMove.D_, CubeMove.R, CubeMove.F_, CubeMove.R_],
+
+            WhiteEdgeLocation.RightUp => [CubeMove.R_, CubeMove.F_],
+            WhiteEdgeLocation.RightFront => [CubeMove.F_],
+            WhiteEdgeLocation.RightBack => [CubeMove.R2, CubeMove.F_],
+            WhiteEdgeLocation.RightDown => [CubeMove.R, CubeMove.F_],
+
+            WhiteEdgeLocation.LeftUp => [CubeMove.L, CubeMove.F],
+            WhiteEdgeLocation.LeftBack => [CubeMove.L2, CubeMove.F],
+            WhiteEdgeLocation.LeftFront => [CubeMove.F],
+            WhiteEdgeLocation.LeftDown => [CubeMove.L_, CubeMove.F],
+
+            _ => []
+        };
     }
 
     private static WhiteEdgeLocation GetSecondColorLocationOfTheWhiteEdge(WhiteEdgeLocation whiteStickerLocation)

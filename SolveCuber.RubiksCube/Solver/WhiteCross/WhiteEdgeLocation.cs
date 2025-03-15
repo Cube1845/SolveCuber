@@ -21,8 +21,8 @@ internal enum WhiteEdgeLocation
     FrontDown = 12,
 
     BackUp = 13,
-    BackLeft = 14,
-    BackRight = 15,
+    BackRight = 14,
+    BackLeft = 15,
     BackDown = 16,
 
     RightUp = 17,

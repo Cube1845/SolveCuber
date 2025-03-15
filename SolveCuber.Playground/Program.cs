@@ -13,6 +13,10 @@ WhiteCrossSolver.SolveCross(cube);
 
 DisplayCube(cube);
 
+var x = WhiteCrossSolver.SolveCross(cube);
+
+var y = x;
+
 void DisplayScramble(List<CubeMove> scramble)
 {
     Console.Write("\nScramble: ");
