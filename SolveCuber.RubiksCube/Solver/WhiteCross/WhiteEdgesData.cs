@@ -6,4 +6,15 @@ internal class WhiteEdgesData
     public WhiteEdgeLocation Orange { get; set; }
     public WhiteEdgeLocation Red { get; set; }
     public WhiteEdgeLocation Blue { get; set; }
+
+    internal WhiteEdgesData DeepCopy()
+    {
+        return new()
+        {
+            Green = Green,
+            Orange = Orange,
+            Red = Red,
+            Blue = Blue
+        };
+    }
 }

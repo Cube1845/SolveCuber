@@ -6,55 +6,55 @@ namespace SolveCuber.Solver.WhiteCross;
 
 public static class WhiteCrossSolver
 {
+    private readonly static List<List<CubeColor>> _edgeSolvingOrders = 
+    [
+        [CubeColor.Green, CubeColor.Orange, CubeColor.Red, CubeColor.Blue],
+        [CubeColor.Green, CubeColor.Orange, CubeColor.Blue, CubeColor.Red],
+        [CubeColor.Green, CubeColor.Red, CubeColor.Blue, CubeColor.Orange],
+        [CubeColor.Green, CubeColor.Red, CubeColor.Orange, CubeColor.Blue],
+        [CubeColor.Green, CubeColor.Blue, CubeColor.Orange, CubeColor.Red],
+        [CubeColor.Green, CubeColor.Blue, CubeColor.Red, CubeColor.Orange],
+
+        [CubeColor.Orange, CubeColor.Green, CubeColor.Red, CubeColor.Blue],
+        [CubeColor.Orange, CubeColor.Green, CubeColor.Blue, CubeColor.Red],
+        [CubeColor.Orange, CubeColor.Red, CubeColor.Blue, CubeColor.Green],
+        [CubeColor.Orange, CubeColor.Red, CubeColor.Green, CubeColor.Blue],
+        [CubeColor.Orange, CubeColor.Blue, CubeColor.Green, CubeColor.Red],
+        [CubeColor.Orange, CubeColor.Blue, CubeColor.Red, CubeColor.Green],
+
+        [CubeColor.Red, CubeColor.Orange, CubeColor.Green, CubeColor.Blue],
+        [CubeColor.Red, CubeColor.Orange, CubeColor.Blue, CubeColor.Green],
+        [CubeColor.Red, CubeColor.Green, CubeColor.Blue, CubeColor.Orange],
+        [CubeColor.Red, CubeColor.Green, CubeColor.Orange, CubeColor.Blue],
+        [CubeColor.Red, CubeColor.Blue, CubeColor.Orange, CubeColor.Green],
+        [CubeColor.Red, CubeColor.Blue, CubeColor.Green, CubeColor.Orange],
+
+        [CubeColor.Blue, CubeColor.Orange, CubeColor.Red, CubeColor.Green],
+        [CubeColor.Blue, CubeColor.Orange, CubeColor.Green, CubeColor.Red],
+        [CubeColor.Blue, CubeColor.Red, CubeColor.Green, CubeColor.Orange],
+        [CubeColor.Blue, CubeColor.Red, CubeColor.Orange, CubeColor.Green],
+        [CubeColor.Blue, CubeColor.Green, CubeColor.Orange, CubeColor.Red],
+        [CubeColor.Blue, CubeColor.Green, CubeColor.Red, CubeColor.Orange],
+    ];
+
     public static List<CubeMove> SolveCross(Cube cube)
     {
-        WhiteEdgesData whiteEdgesData = GetWhiteEdgeLocations(cube);
-
-        if (IsCrossSolved(whiteEdgesData))
-        {
-            return [];
-        }
-
         List<CubeMove> moves = [];
 
-        while (!IsCrossSolved(whiteEdgesData))
-        {
-            whiteEdgesData = GetWhiteEdgeLocations(cube);
+        WhiteEdgesData edgesData = GetWhiteEdgeLocations(cube);
 
-            List<List<CubeMove>> edgeSolvingMovesList =
-            [
-                GetGreenWhiteEdgePositioningMoves(whiteEdgesData.Green),
-                GetOrangeWhiteEdgePositioningMoves(whiteEdgesData.Orange),
-                GetRedWhiteEdgePositioningMoves(whiteEdgesData.Red),
-                GetBlueWhiteEdgePositioningMoves(whiteEdgesData.Blue),
-            ];
-
-            var edgeSolvingMoves = GetEdgeSolveIndexWithTheLeastMoves(edgeSolvingMovesList);
-
-            cube.ExecuteAlgorithm(edgeSolvingMoves);
-
-            moves.AddRange(edgeSolvingMoves);
-        }
-
-        return MoveOptimizer.OptimizeMoves(moves);
+        
     }
 
-    private static List<CubeMove> GetEdgeSolveIndexWithTheLeastMoves(List<List<CubeMove>> movesList)
+    public static List<CubeMove> GetSolutionWithLeastMoves(Cube cube)
     {
-        // Maximum moves to get the edge to the right position is 4
-        int currentLeastMoves = 4;
-        int leastMovesIndex = 0;
-
-        for (int i = 0; i < movesList.Count; i++)
+        for (int i = 0; i < _edgeSolvingOrders.Count; i++)
         {
-            if (movesList[i].Count <= currentLeastMoves && movesList[i].Count > 0)
-            {
-                currentLeastMoves = movesList[i].Count;
-                leastMovesIndex = i;
-            }
-        }
+            List<CubeMove> currentResolvingOrderMoves = [];
 
-        return movesList[leastMovesIndex];
+            Cube cubeCopy = cube.DeepCopy();
+            WhiteEdgesData edgesData = GetWhiteEdgeLocations(cubeCopy);
+        }
     }
 
     private static bool IsCrossSolved(WhiteEdgesData edgesData)
@@ -130,6 +130,21 @@ public static class WhiteCrossSolver
             face.Face[1, 2],
             face.Face[2, 1]
         ];
+    }
+
+    private static List<CubeMove> GetWhiteEdgePositioningMoves(WhiteEdgeLocation edgeLocation, CubeColor whiteEdgeSecondColor)
+    {
+        Func<WhiteEdgeLocation, List<CubeMove>> getMoves = whiteEdgeSecondColor switch
+        {
+            CubeColor.Green => GetGreenWhiteEdgePositioningMoves,
+            CubeColor.Orange => GetOrangeWhiteEdgePositioningMoves,
+            CubeColor.Red => GetRedWhiteEdgePositioningMoves,
+            CubeColor.Blue => GetBlueWhiteEdgePositioningMoves,
+
+            _ => throw new NotImplementedException()
+        };
+
+        return getMoves(edgeLocation);
     }
 
     private static List<CubeMove> GetGreenWhiteEdgePositioningMoves(WhiteEdgeLocation edgeLocation)
