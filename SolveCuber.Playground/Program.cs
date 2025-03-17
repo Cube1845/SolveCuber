@@ -7,21 +7,19 @@ Cube cube = new();
 
 var scramble = Scrambler.ScrambleCube(cube);
 
-DisplayScramble(scramble);
-
-WhiteCrossSolver.SolveCross(cube);
+DisplayMoves(scramble);
 
 DisplayCube(cube);
 
-var x = WhiteCrossSolver.SolveCross(cube);
+var solvingCrossMoves = WhiteCrossSolver.SolveCross(cube);
 
-var y = x;
+DisplayMoves(solvingCrossMoves);
 
-void DisplayScramble(List<CubeMove> scramble)
+void DisplayMoves(List<CubeMove> moves)
 {
-    Console.Write("\nScramble: ");
+    Console.Write("\nMoves: ");
 
-    foreach (var move in scramble)
+    foreach (var move in moves)
     {
         Console.Write(move.ToString() + ", ");
     }
