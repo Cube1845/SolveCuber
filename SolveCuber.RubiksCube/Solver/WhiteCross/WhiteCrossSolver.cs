@@ -59,7 +59,12 @@ public static class WhiteCrossSolver
 
         foreach (var colorOrder in _edgeSolvingOrders)
         {
-            solutions.Add(GetSolvingCrossMoves(cube, colorOrder));
+            var solution = GetSolvingCrossMoves(cube, colorOrder);
+
+            if (solution != null)
+            {
+                solutions.Add(solution);
+            }
         }
 
         var orderedSolutions = solutions.OrderBy(s => s.Count).ToList();
@@ -67,7 +72,7 @@ public static class WhiteCrossSolver
         return orderedSolutions[0];
     }
 
-    private static List<CubeMove> GetSolvingCrossMoves(Cube cube, List<CubeColor> colorOrder)
+    private static List<CubeMove>? GetSolvingCrossMoves(Cube cube, List<CubeColor> colorOrder)
     {
         List<CubeMove> crossSolvingMoves = [];
 
@@ -77,8 +82,10 @@ public static class WhiteCrossSolver
         {
             WhiteEdgesData edgesData = GetWhiteEdgeLocations(cubeCopy);
 
+            var currentEdgeLocation = edgesData.GetLocation(whiteEdgeSecondColor);
+
             var moves =
-                GetWhiteEdgePositioningMoves(edgesData.GetLocation(whiteEdgeSecondColor), whiteEdgeSecondColor);
+                 GetWhiteEdgePositioningMoves(currentEdgeLocation, whiteEdgeSecondColor);
 
             cubeCopy.ExecuteAlgorithm(moves);
 
@@ -87,7 +94,7 @@ public static class WhiteCrossSolver
 
         if (!IsCrossSolved(GetWhiteEdgeLocations(cubeCopy)))
         {
-            throw new Exception();
+            return null;
         }
 
         return MoveOptimizer.OptimizeMoves(crossSolvingMoves);
@@ -99,6 +106,19 @@ public static class WhiteCrossSolver
             edgesData.Orange == WhiteEdgeLocation.UpLeft &&
             edgesData.Red == WhiteEdgeLocation.UpRight &&
             edgesData.Blue == WhiteEdgeLocation.UpBack;
+    }
+
+    private static bool IsInCorrectPlace(CubeColor secondWhiteEdgeColor, WhiteEdgeLocation location)
+    {
+        return secondWhiteEdgeColor switch
+        {
+            CubeColor.Green => location == WhiteEdgeLocation.UpFront,
+            CubeColor.Orange => location == WhiteEdgeLocation.UpLeft,
+            CubeColor.Red => location == WhiteEdgeLocation.UpRight,
+            CubeColor.Blue => location == WhiteEdgeLocation.UpBack,
+
+            _ => throw new NotImplementedException()
+        };
     }
 
     private static WhiteEdgesData GetWhiteEdgeLocations(Cube cube)
