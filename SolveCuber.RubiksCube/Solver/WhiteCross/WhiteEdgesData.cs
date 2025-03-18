@@ -1,4 +1,6 @@
-﻿namespace SolveCuber.Solver.WhiteCross;
+﻿using SolveCuber.CubeModel;
+
+namespace SolveCuber.Solver.WhiteCross;
 
 internal class WhiteEdgesData
 {
@@ -15,6 +17,19 @@ internal class WhiteEdgesData
             Orange = Orange,
             Red = Red,
             Blue = Blue
+        };
+    }
+
+    internal WhiteEdgeLocation GetLocation(CubeColor color)
+    {
+        return color switch
+        {
+            CubeColor.Green => Green,
+            CubeColor.Orange => Orange,
+            CubeColor.Red => Red,
+            CubeColor.Blue => Blue,
+
+            _ => throw new NotImplementedException()
         };
     }
 }

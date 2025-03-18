@@ -39,22 +39,58 @@ public static class WhiteCrossSolver
 
     public static List<CubeMove> SolveCross(Cube cube)
     {
-        List<CubeMove> moves = [];
-
         WhiteEdgesData edgesData = GetWhiteEdgeLocations(cube);
 
-        
+        if (IsCrossSolved(edgesData))
+        {
+            return [];
+        }
+
+        List<CubeMove> moves = [];
+
+        moves.AddRange(GetSolutionWithLeastMoves(cube, edgesData));
+
+        return MoveOptimizer.OptimizeMoves(moves);
     }
 
-    public static List<CubeMove> GetSolutionWithLeastMoves(Cube cube)
+    private static List<CubeMove> GetSolutionWithLeastMoves(Cube cube, WhiteEdgesData edgesData)
     {
-        for (int i = 0; i < _edgeSolvingOrders.Count; i++)
-        {
-            List<CubeMove> currentResolvingOrderMoves = [];
+        List<List<CubeMove>> solutions = [];
 
-            Cube cubeCopy = cube.DeepCopy();
-            WhiteEdgesData edgesData = GetWhiteEdgeLocations(cubeCopy);
+        foreach (var colorOrder in _edgeSolvingOrders)
+        {
+            solutions.Add(GetSolvingCrossMoves(cube, colorOrder));
         }
+
+        var orderedSolutions = solutions.OrderBy(s => s.Count).ToList();
+
+        return orderedSolutions[0];
+    }
+
+    private static List<CubeMove> GetSolvingCrossMoves(Cube cube, List<CubeColor> colorOrder)
+    {
+        List<CubeMove> crossSolvingMoves = [];
+
+        Cube cubeCopy = cube.DeepCopy();
+
+        foreach (var whiteEdgeSecondColor in colorOrder)
+        {
+            WhiteEdgesData edgesData = GetWhiteEdgeLocations(cubeCopy);
+
+            var moves =
+                GetWhiteEdgePositioningMoves(edgesData.GetLocation(whiteEdgeSecondColor), whiteEdgeSecondColor);
+
+            cubeCopy.ExecuteAlgorithm(moves);
+
+            crossSolvingMoves.AddRange(moves);
+        }
+
+        if (!IsCrossSolved(GetWhiteEdgeLocations(cubeCopy)))
+        {
+            throw new Exception();
+        }
+
+        return MoveOptimizer.OptimizeMoves(crossSolvingMoves);
     }
 
     private static bool IsCrossSolved(WhiteEdgesData edgesData)
@@ -301,14 +337,39 @@ public static class WhiteCrossSolver
 
     private static WhiteEdgeLocation GetSecondColorLocationOfTheWhiteEdge(WhiteEdgeLocation whiteStickerLocation)
     {
-        var name = whiteStickerLocation.ToString();
-        var match = System.Text.RegularExpressions.Regex.Match(name, "^([A-Z][a-z]*)([A-Z][a-z]*)$");
-
-        if (!match.Success || !Enum.TryParse($"{match.Groups[2].Value}{match.Groups[1].Value}", out WhiteEdgeLocation result))
+        return whiteStickerLocation switch
         {
-            throw new NotImplementedException();
-        }
+            WhiteEdgeLocation.UpBack => WhiteEdgeLocation.BackUp,
+            WhiteEdgeLocation.UpLeft => WhiteEdgeLocation.LeftUp,
+            WhiteEdgeLocation.UpRight => WhiteEdgeLocation.RightUp,
+            WhiteEdgeLocation.UpFront => WhiteEdgeLocation.FrontUp,
 
-        return result;
+            WhiteEdgeLocation.DownFront => WhiteEdgeLocation.FrontDown,
+            WhiteEdgeLocation.DownLeft => WhiteEdgeLocation.LeftDown,
+            WhiteEdgeLocation.DownRight => WhiteEdgeLocation.RightDown,
+            WhiteEdgeLocation.DownBack => WhiteEdgeLocation.BackDown,
+
+            WhiteEdgeLocation.FrontUp => WhiteEdgeLocation.UpFront,
+            WhiteEdgeLocation.FrontLeft => WhiteEdgeLocation.LeftFront,
+            WhiteEdgeLocation.FrontRight => WhiteEdgeLocation.RightFront,
+            WhiteEdgeLocation.FrontDown => WhiteEdgeLocation.DownFront,
+
+            WhiteEdgeLocation.BackUp => WhiteEdgeLocation.UpBack,
+            WhiteEdgeLocation.BackLeft => WhiteEdgeLocation.LeftBack,
+            WhiteEdgeLocation.BackRight => WhiteEdgeLocation.RightBack,
+            WhiteEdgeLocation.BackDown => WhiteEdgeLocation.DownBack,
+
+            WhiteEdgeLocation.RightUp => WhiteEdgeLocation.UpRight,
+            WhiteEdgeLocation.RightFront => WhiteEdgeLocation.FrontRight,
+            WhiteEdgeLocation.RightBack => WhiteEdgeLocation.BackRight,
+            WhiteEdgeLocation.RightDown => WhiteEdgeLocation.DownRight,
+
+            WhiteEdgeLocation.LeftUp => WhiteEdgeLocation.UpLeft,
+            WhiteEdgeLocation.LeftBack => WhiteEdgeLocation.BackLeft,
+            WhiteEdgeLocation.LeftFront => WhiteEdgeLocation.FrontLeft,
+            WhiteEdgeLocation.LeftDown => WhiteEdgeLocation.DownLeft,
+
+            _ => throw new NotImplementedException()
+        };
     }
 }
