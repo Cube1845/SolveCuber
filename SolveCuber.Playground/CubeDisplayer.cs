@@ -14,52 +14,39 @@ internal static class CubeDisplayer
 
         for (int i = 0; i < 3; i++)
         {
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.Write(_empty + _empty + _empty);
+            WriteEmptySpaces(3);
 
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Up.Face[i, 0]);
-            Console.Write(_empty);
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Up.Face[i, 1]);
-            Console.Write(_empty);
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Up.Face[i, 2]);
-            Console.Write(_empty);
+            for (int j = 0; j < 3; j++)
+            {
+                WriteColor(cube.Up.Face[i, j]);
+            }
 
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.Write(_empty + _empty + _empty);
-            Console.Write(_empty + _empty + _empty);
+            WriteEmptySpaces(6);
 
             Console.Write("\n");
         }
 
         for (int i = 0; i < 3; i++)
         {
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Left.Face[i, 0]);
-            Console.Write(_empty);
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Left.Face[i, 1]);
-            Console.Write(_empty);
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Left.Face[i, 2]);
-            Console.Write(_empty);
+            for (int j = 0; j < 3; j++)
+            {
+                WriteColor(cube.Left.Face[i, j]);
+            }
 
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Front.Face[i, 0]);
-            Console.Write(_empty);
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Front.Face[i, 1]);
-            Console.Write(_empty);
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Front.Face[i, 2]);
-            Console.Write(_empty);
+            for (int j = 0; j < 3; j++)
+            {
+                WriteColor(cube.Front.Face[i, j]);
+            }
 
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Right.Face[i, 0]);
-            Console.Write(_empty);
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Right.Face[i, 1]);
-            Console.Write(_empty);
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Right.Face[i, 2]);
-            Console.Write(_empty);
+            for (int j = 0; j < 3; j++)
+            {
+                WriteColor(cube.Right.Face[i, j]);
+            }
 
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Back.Face[i, 0]);
-            Console.Write(_empty);
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Back.Face[i, 1]);
-            Console.Write(_empty);
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Back.Face[i, 2]);
-            Console.Write(_empty);
+            for (int j = 0; j < 3; j++)
+            {
+                WriteColor(cube.Back.Face[i, j]);
+            }
 
             Console.BackgroundColor = ConsoleColor.Black;
             Console.Write("\n");
@@ -67,15 +54,12 @@ internal static class CubeDisplayer
 
         for (int i = 0; i < 3; i++)
         {
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.Write(_empty + _empty + _empty);
+            WriteEmptySpaces(3);
 
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Down.Face[i, 0]);
-            Console.Write(_empty);
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Down.Face[i, 1]);
-            Console.Write(_empty);
-            Console.BackgroundColor = MapCubeColorToConsoleColor(cube.Down.Face[i, 2]);
-            Console.Write(_empty);
+            for (int j = 0; j < 3; j++)
+            {
+                WriteColor(cube.Down.Face[i, j]);
+            }
 
             Console.BackgroundColor = ConsoleColor.Black;
             Console.Write("\n");
@@ -95,5 +79,21 @@ internal static class CubeDisplayer
 
             _ => throw new NotImplementedException()
         };
+    }
+
+    private static void WriteEmptySpaces(int count)
+    {
+        Console.BackgroundColor = ConsoleColor.Black;
+
+        for (int i = 0; i < count; i++)
+        {
+            Console.Write(_empty);
+        }
+    }
+
+    private static void WriteColor(CubeColor color)
+    {
+        Console.BackgroundColor = MapCubeColorToConsoleColor(color);
+        Console.Write(_empty);
     }
 }
