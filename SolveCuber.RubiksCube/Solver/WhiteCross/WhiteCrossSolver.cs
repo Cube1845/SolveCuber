@@ -51,19 +51,22 @@ public static class WhiteCrossSolver
 
         if (IsAnyWhiteEdgeOnUpFace(cube))
         {
-            var topFaceWhiteEdgePositioningMoves = GetMoveThatPositionsTheMostEdgesCorrect(cube);
+            var topFaceWhiteEdgePositioningMove = GetMoveThatPositionsTheMostEdgesCorrect(cube);
 
-            if (topFaceWhiteEdgePositioningMoves != null)
+            if (topFaceWhiteEdgePositioningMove != null)
             {
-                moves.Add(topFaceWhiteEdgePositioningMoves!.Value);
+                cube.ExecuteMove(topFaceWhiteEdgePositioningMove!.Value);
+                moves.Add(topFaceWhiteEdgePositioningMove!.Value);
             }
         }
 
         moves.AddRange(GetSolutionWithLeastMoves(cube));
 
-        cube.ExecuteAlgorithm(moves);
+        var optimizedMoves = MoveOptimizer.OptimizeMoves(moves);
 
-        return MoveOptimizer.OptimizeMoves(moves);
+        cube.ExecuteAlgorithm(optimizedMoves);
+
+        return optimizedMoves;
     }
 
     private static CubeMove? GetMoveThatPositionsTheMostEdgesCorrect(Cube cube)
