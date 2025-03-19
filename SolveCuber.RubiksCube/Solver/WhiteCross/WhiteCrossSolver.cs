@@ -59,7 +59,8 @@ public static class WhiteCrossSolver
 
         foreach (var colorOrder in _edgeSolvingOrders)
         {
-            solutions.Add(GetSolvingCrossMoves(cube, colorOrder));
+            var solution = GetSolvingCrossMovesForOrder(cube.DeepCopy(), colorOrder);
+            solutions.Add(solution);
         }
 
         var orderedSolutions = solutions.OrderBy(s => s.Count).ToList();
@@ -67,22 +68,21 @@ public static class WhiteCrossSolver
         return orderedSolutions[0];
     }
 
-    private static List<CubeMove> GetSolvingCrossMoves(Cube cube, List<CubeColor> colorOrder)
+    private static List<CubeMove> GetSolvingCrossMovesForOrder(Cube cube, List<CubeColor> colorOrder)
     {
-        List<CubeMove> crossSolvingMoves = [];
-
         Cube cubeCopy = cube.DeepCopy();
 
-        foreach (var whiteEdgeSecondColor in colorOrder)
+        List<CubeMove> moves = [];
+
+        foreach (var color in colorOrder)
         {
             WhiteEdgesData edgesData = GetWhiteEdgeLocations(cubeCopy);
 
-            var moves =
-                GetWhiteEdgePositioningMoves(edgesData.GetLocation(whiteEdgeSecondColor), whiteEdgeSecondColor);
+            var currentMoves = GetWhiteEdgePositioningMoves(edgesData.GetLocation(color), color);
 
-            cubeCopy.ExecuteAlgorithm(moves);
+            cubeCopy.ExecuteAlgorithm(currentMoves);
 
-            crossSolvingMoves.AddRange(moves);
+            moves.AddRange(currentMoves);
         }
 
         if (!IsCrossSolved(GetWhiteEdgeLocations(cubeCopy)))
@@ -90,7 +90,7 @@ public static class WhiteCrossSolver
             throw new Exception();
         }
 
-        return MoveOptimizer.OptimizeMoves(crossSolvingMoves);
+        return moves;
     }
 
     private static bool IsCrossSolved(WhiteEdgesData edgesData)
