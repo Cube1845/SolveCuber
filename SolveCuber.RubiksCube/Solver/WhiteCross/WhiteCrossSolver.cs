@@ -6,6 +6,9 @@ namespace SolveCuber.Solver.WhiteCross;
 
 public static class WhiteCrossSolver
 {
+    private readonly static List<CubeColor> _secondWhiteEdgeColors =
+        [CubeColor.Green, CubeColor.Orange, CubeColor.Red, CubeColor.Blue];
+
     private readonly static List<List<CubeColor>> _edgeSolvingOrders = 
     [
         [CubeColor.Green, CubeColor.Orange, CubeColor.Red, CubeColor.Blue],
@@ -39,27 +42,112 @@ public static class WhiteCrossSolver
 
     public static List<CubeMove> SolveCross(Cube cube)
     {
-        WhiteEdgesData edgesData = GetWhiteEdgeLocations(cube);
-
-        if (IsCrossSolved(edgesData))
+        if (IsCrossSolved(cube))
         {
             return [];
         }
 
         List<CubeMove> moves = [];
 
-        moves.AddRange(GetSolutionWithLeastMoves(cube, edgesData));
+        if (IsAnyWhiteEdgeOnUpFace(cube))
+        {
+            var topFaceWhiteEdgePositioningMoves = GetMoveThatPositionsTheMostEdgesCorrect(cube);
+
+            if (topFaceWhiteEdgePositioningMoves != null)
+            {
+                moves.Add(topFaceWhiteEdgePositioningMoves!.Value);
+            }
+        }
+
+        moves.AddRange(GetSolutionWithLeastMoves(cube));
+
+        cube.ExecuteAlgorithm(moves);
 
         return MoveOptimizer.OptimizeMoves(moves);
     }
 
-    private static List<CubeMove> GetSolutionWithLeastMoves(Cube cube, WhiteEdgesData edgesData)
+    private static CubeMove? GetMoveThatPositionsTheMostEdgesCorrect(Cube cube)
+    {
+        List<int> correctlyPlacedEdgesForSolutions = [];
+
+        Cube cubeCopy = cube.DeepCopy();
+        correctlyPlacedEdgesForSolutions.Add(GetCorrectlyPlacedEdgesCount(cubeCopy));
+
+        for (int i = 0; i < (_secondWhiteEdgeColors.Count - 1); i++)
+        {
+            cubeCopy.ExecuteMove(CubeMove.U);
+
+            correctlyPlacedEdgesForSolutions.Add(GetCorrectlyPlacedEdgesCount(cubeCopy));
+        }
+
+        var mostEdgesCorrectIndex = correctlyPlacedEdgesForSolutions.IndexOf(correctlyPlacedEdgesForSolutions.Max());
+
+        return mostEdgesCorrectIndex switch
+        {
+            0 => null,
+            1 => CubeMove.U,
+            2 => CubeMove.U2,
+            3 => CubeMove.U_,
+
+            _ => throw new Exception()
+        };
+    }
+
+    private static int GetCorrectlyPlacedEdgesCount(Cube cube)
+    {
+        WhiteEdgesData edgesData = GetWhiteEdgeLocations(cube);
+        int correctlyPlacedEdges = 0;
+
+        foreach (var color in _secondWhiteEdgeColors)
+        {
+            if (IsInCorrectPlace(color, edgesData.GetLocation(color)))
+            {
+                correctlyPlacedEdges++;
+            }
+        }
+
+        return correctlyPlacedEdges;
+    }
+
+    private static bool IsInCorrectPlace(CubeColor secondWhiteEdgeColor, WhiteEdgeLocation location)
+    {
+        return secondWhiteEdgeColor switch
+        {
+            CubeColor.Green => location == WhiteEdgeLocation.UpFront,
+            CubeColor.Orange => location == WhiteEdgeLocation.UpLeft,
+            CubeColor.Red => location == WhiteEdgeLocation.UpRight,
+            CubeColor.Blue => location == WhiteEdgeLocation.UpBack,
+
+            _ => throw new NotImplementedException()
+        };
+    }
+
+    private static bool IsAnyWhiteEdgeOnUpFace(Cube cube)
+    {
+        WhiteEdgesData edgesData = GetWhiteEdgeLocations(cube);
+
+        int edgesOnTopFaceCount = 0;
+
+        foreach (var color in _secondWhiteEdgeColors)
+        {
+            var currentLocation = edgesData.GetLocation(color);
+
+            if (currentLocation.ToString().StartsWith("Up"))
+            {
+                edgesOnTopFaceCount++;
+            }
+        }
+
+        return edgesOnTopFaceCount > 0;
+    }
+
+    private static List<CubeMove> GetSolutionWithLeastMoves(Cube cube)
     {
         List<List<CubeMove>> solutions = [];
 
         foreach (var colorOrder in _edgeSolvingOrders)
         {
-            var solution = GetSolvingCrossMovesForOrder(cube.DeepCopy(), colorOrder);
+            var solution = GetSolvingCrossMovesForOrder(cube, colorOrder);
             solutions.Add(solution);
         }
 
@@ -74,44 +162,29 @@ public static class WhiteCrossSolver
 
         List<CubeMove> moves = [];
 
-        foreach (var color in colorOrder)
+        foreach (var secondWhiteEdgeColor in colorOrder)
         {
             WhiteEdgesData edgesData = GetWhiteEdgeLocations(cubeCopy);
 
-            var currentMoves = GetWhiteEdgePositioningMoves(edgesData.GetLocation(color), color);
+            var currentMoves =
+                GetWhiteEdgePositioningMoves(edgesData.GetLocation(secondWhiteEdgeColor), secondWhiteEdgeColor);
 
             cubeCopy.ExecuteAlgorithm(currentMoves);
 
             moves.AddRange(currentMoves);
         }
 
-        if (!IsCrossSolved(GetWhiteEdgeLocations(cubeCopy)))
-        {
-            return null;
-        }
-
-        return moves;
+        return MoveOptimizer.OptimizeMoves(moves);
     }
 
-    private static bool IsCrossSolved(WhiteEdgesData edgesData)
+    private static bool IsCrossSolved(Cube cube)
     {
+        WhiteEdgesData edgesData = GetWhiteEdgeLocations(cube);
+
         return edgesData.Green == WhiteEdgeLocation.UpFront &&
             edgesData.Orange == WhiteEdgeLocation.UpLeft &&
             edgesData.Red == WhiteEdgeLocation.UpRight &&
             edgesData.Blue == WhiteEdgeLocation.UpBack;
-    }
-
-    private static bool IsInCorrectPlace(CubeColor secondWhiteEdgeColor, WhiteEdgeLocation location)
-    {
-        return secondWhiteEdgeColor switch
-        {
-            CubeColor.Green => location == WhiteEdgeLocation.UpFront,
-            CubeColor.Orange => location == WhiteEdgeLocation.UpLeft,
-            CubeColor.Red => location == WhiteEdgeLocation.UpRight,
-            CubeColor.Blue => location == WhiteEdgeLocation.UpBack,
-
-            _ => throw new NotImplementedException()
-        };
     }
 
     private static WhiteEdgesData GetWhiteEdgeLocations(Cube cube)
@@ -215,20 +288,20 @@ public static class WhiteCrossSolver
             WhiteEdgeLocation.FrontRight => [CubeMove.U_, CubeMove.R, CubeMove.U],
             WhiteEdgeLocation.FrontDown => [CubeMove.F_, CubeMove.U_, CubeMove.R, CubeMove.U],
 
-            WhiteEdgeLocation.BackUp => [CubeMove.B_, CubeMove.U2, CubeMove.B, CubeMove.U2],
+            WhiteEdgeLocation.BackUp => [CubeMove.B_, CubeMove.U_, CubeMove.R_, CubeMove.U],
             WhiteEdgeLocation.BackRight => [CubeMove.U_, CubeMove.R_, CubeMove.U],
             WhiteEdgeLocation.BackLeft => [CubeMove.U, CubeMove.L, CubeMove.U_],
             WhiteEdgeLocation.BackDown => [CubeMove.D_, CubeMove.R, CubeMove.F_, CubeMove.R_],
 
             WhiteEdgeLocation.RightUp => [CubeMove.R_, CubeMove.F_],
             WhiteEdgeLocation.RightFront => [CubeMove.F_],
-            WhiteEdgeLocation.RightBack => [CubeMove.R2, CubeMove.F_],
-            WhiteEdgeLocation.RightDown => [CubeMove.R, CubeMove.F_],
+            WhiteEdgeLocation.RightBack => [CubeMove.R2, CubeMove.F_, CubeMove.R2],
+            WhiteEdgeLocation.RightDown => [CubeMove.R, CubeMove.F_, CubeMove.R_],
 
             WhiteEdgeLocation.LeftUp => [CubeMove.L, CubeMove.F],
-            WhiteEdgeLocation.LeftBack => [CubeMove.L2, CubeMove.F],
+            WhiteEdgeLocation.LeftBack => [CubeMove.L2, CubeMove.F, CubeMove.L2],
             WhiteEdgeLocation.LeftFront => [CubeMove.F],
-            WhiteEdgeLocation.LeftDown => [CubeMove.L_, CubeMove.F],
+            WhiteEdgeLocation.LeftDown => [CubeMove.L_, CubeMove.F, CubeMove.L],
 
             _ => []
         };
@@ -250,17 +323,17 @@ public static class WhiteCrossSolver
 
             WhiteEdgeLocation.FrontUp => [CubeMove.F_, CubeMove.L_],
             WhiteEdgeLocation.FrontLeft => [CubeMove.L_],
-            WhiteEdgeLocation.FrontRight => [CubeMove.F2, CubeMove.L_],
-            WhiteEdgeLocation.FrontDown => [CubeMove.F, CubeMove.L_],
+            WhiteEdgeLocation.FrontRight => [CubeMove.F2, CubeMove.L_, CubeMove.F2],
+            WhiteEdgeLocation.FrontDown => [CubeMove.F, CubeMove.L_, CubeMove.F_],
 
             WhiteEdgeLocation.BackUp => [CubeMove.B, CubeMove.L],
             WhiteEdgeLocation.BackRight => [CubeMove.U2, CubeMove.R_, CubeMove.U2],
             WhiteEdgeLocation.BackLeft => [CubeMove.L],
-            WhiteEdgeLocation.BackDown => [CubeMove.B_, CubeMove.L],
+            WhiteEdgeLocation.BackDown => [CubeMove.B_, CubeMove.L, CubeMove.B],
 
             WhiteEdgeLocation.RightUp => [CubeMove.R_, CubeMove.U_, CubeMove.F_, CubeMove.U],
             WhiteEdgeLocation.RightFront => [CubeMove.U_, CubeMove.F_, CubeMove.U],
-            WhiteEdgeLocation.RightBack => [CubeMove.U2, CubeMove.B, CubeMove.U2],
+            WhiteEdgeLocation.RightBack => [CubeMove.U, CubeMove.B, CubeMove.U_],
             WhiteEdgeLocation.RightDown => [CubeMove.D_, CubeMove.F, CubeMove.L_, CubeMove.F_],
 
             WhiteEdgeLocation.LeftUp => [CubeMove.L, CubeMove.U_, CubeMove.F, CubeMove.U],
@@ -287,9 +360,9 @@ public static class WhiteCrossSolver
             WhiteEdgeLocation.DownBack => [CubeMove.D_, CubeMove.R2],
 
             WhiteEdgeLocation.FrontUp => [CubeMove.F, CubeMove.R],
-            WhiteEdgeLocation.FrontLeft => [CubeMove.F2, CubeMove.R],
+            WhiteEdgeLocation.FrontLeft => [CubeMove.F2, CubeMove.R, CubeMove.F2],
             WhiteEdgeLocation.FrontRight => [CubeMove.R],
-            WhiteEdgeLocation.FrontDown => [CubeMove.F_, CubeMove.R],
+            WhiteEdgeLocation.FrontDown => [CubeMove.F_, CubeMove.R, CubeMove.F],
 
             WhiteEdgeLocation.BackUp => [CubeMove.B_, CubeMove.R_],
             WhiteEdgeLocation.BackRight => [CubeMove.R_],
@@ -327,7 +400,7 @@ public static class WhiteCrossSolver
             WhiteEdgeLocation.FrontUp => [CubeMove.F, CubeMove.U, CubeMove.R, CubeMove.U_],
             WhiteEdgeLocation.FrontLeft => [CubeMove.U_, CubeMove.L_, CubeMove.U],
             WhiteEdgeLocation.FrontRight => [CubeMove.U, CubeMove.R, CubeMove.U_],
-            WhiteEdgeLocation.FrontDown => [CubeMove.F_, CubeMove.U, CubeMove.R, CubeMove.U_],
+            WhiteEdgeLocation.FrontDown => [CubeMove.D, CubeMove.R_, CubeMove.B, CubeMove.R],
 
             WhiteEdgeLocation.BackUp => [CubeMove.B_, CubeMove.U, CubeMove.R_, CubeMove.U_],
             WhiteEdgeLocation.BackRight => [CubeMove.U, CubeMove.R_, CubeMove.U_],

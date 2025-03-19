@@ -15,6 +15,8 @@ var solvingCrossMoves = WhiteCrossSolver.SolveCross(cube);
 
 DisplayMoves(solvingCrossMoves);
 
+DisplayCube(cube);
+
 void DisplayMoves(List<CubeMove> moves)
 {
     Console.Write("\nMoves: ");
