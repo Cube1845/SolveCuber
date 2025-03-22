@@ -1,6 +1,4 @@
-﻿using SolveCuber.Scramble;
-
-namespace SolveCuber.CubeModel.Models;
+﻿namespace SolveCuber.CubeModel.Models;
 
 public partial struct Cube()
 {
@@ -22,6 +20,28 @@ public partial struct Cube()
             Right = Right.DeepCopy(),
             Left = Left.DeepCopy()
         };
+    }
+
+    public Cube RotateCube(CubeRotation rotation)
+    {
+        Action rotateCubeFn = rotation switch
+        {
+            CubeRotation.x => ExecuteXRotation,
+            CubeRotation.x_ => ExecuteXPrimeRotation,
+            CubeRotation.x2 => ExecuteDoubleXRotation,
+            CubeRotation.y => ExecuteYRotation,
+            CubeRotation.y_ => ExecuteYPrimeRotation,
+            CubeRotation.y2 => ExecuteDoubleYRotation,
+            CubeRotation.z => ExecuteZRotation,
+            CubeRotation.z_ => ExecuteZPrimeRotation,
+            CubeRotation.z2 => ExecuteDoubleZRotation,
+
+            _ => throw new NotImplementedException()
+        };
+
+        rotateCubeFn();
+
+        return this;
     }
 
     public Cube ExecuteAlgorithm(List<CubeMove> algorithm)

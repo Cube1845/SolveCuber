@@ -2,6 +2,75 @@
 
 public partial struct Cube
 {
+    // x rotations
+
+    private void ExecuteXRotation()
+    {
+        ExecuteLeftPrimeMove();
+        ExecuteRightMove();
+        ExecuteMiddlePrimeMove();
+    }
+
+    private void ExecuteXPrimeRotation()
+    {
+        ExecuteLeftMove();
+        ExecuteRightPrimeMove();
+        ExecuteMiddleMove();
+    }
+
+    private void ExecuteDoubleXRotation()
+    {
+        ExecuteDoubleLeftMove();
+        ExecuteDoubleRightMove();
+        ExecuteDoubleMiddleMove();
+    }
+
+    // y rotations
+
+    private void ExecuteYRotation()
+    {
+        ExecuteUpMove();
+        ExecuteEquatorPrimeMove();
+        ExecuteDownPrimeMove();
+    }
+
+    private void ExecuteYPrimeRotation()
+    {
+        ExecuteUpPrimeMove();
+        ExecuteEquatorMove();
+        ExecuteDownMove();
+    }
+
+    private void ExecuteDoubleYRotation()
+    {
+        ExecuteDoubleUpMove();
+        ExecuteDoubleEquatorMove();
+        ExecuteDoubleDownMove();
+    }
+
+    // z rotations
+
+    private void ExecuteZRotation()
+    {
+        ExecuteFrontMove();
+        ExecuteStandingMove();
+        ExecuteBackPrimeMove();
+    }
+
+    private void ExecuteZPrimeRotation()
+    {
+        ExecuteFrontPrimeMove();
+        ExecuteStandingPrimeMove();
+        ExecuteBackMove();
+    }
+
+    private void ExecuteDoubleZRotation()
+    {
+        ExecuteDoubleFrontMove();
+        ExecuteDoubleStandingMove();
+        ExecuteDoubleBackMove();
+    }
+
     // U moves
 
     private void ExecuteUpMove()
