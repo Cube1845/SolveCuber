@@ -1,9 +1,11 @@
-﻿namespace SolveCuber.Solver.F2L.Positioning;
+﻿using SolveCuber.Solver.F2L.Positioning.Corners;
+
+namespace SolveCuber.Solver.F2L.Positioning;
 
 internal class NonYellowEdgesData
 {
-    public CornerPosition GreenOrange { get; set; } = new();
-    public CornerPosition OrangeBlue { get; set; } = new();
-    public CornerPosition BlueRed { get; set; } = new();
-    public CornerPosition RedGreen { get; set; } = new();
+    public WhiteCornerPosition GreenOrange { get; set; } = new();
+    public WhiteCornerPosition OrangeBlue { get; set; } = new();
+    public WhiteCornerPosition BlueRed { get; set; } = new();
+    public WhiteCornerPosition RedGreen { get; set; } = new();
 }
