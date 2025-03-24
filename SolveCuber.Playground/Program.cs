@@ -2,6 +2,7 @@
 using SolveCuber.CubeModel.Models;
 using SolveCuber.Playground;
 using SolveCuber.Scramble;
+using SolveCuber.Solver.F2L;
 using SolveCuber.Solver.WhiteCross;
 
 Cube cube = new();
@@ -15,6 +16,12 @@ CubeDisplayer.DisplayCube(cube);
 var solvingCrossMoves = WhiteCrossSolver.SolveCross(cube);
 
 DisplayMoves(solvingCrossMoves);
+
+cube.RotateCube(CubeRotation.z2);
+
+CubeDisplayer.DisplayCube(cube);
+
+F2LSolver.SolveF2l(cube);
 
 void DisplayMoves(List<CubeMove> moves)
 {

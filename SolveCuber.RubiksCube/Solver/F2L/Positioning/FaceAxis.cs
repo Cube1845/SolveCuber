@@ -1,4 +1,4 @@
-﻿namespace SolveCuber.Solver.F2L.Positioning.Corners;
+﻿namespace SolveCuber.Solver.F2L.Positioning;
 
 internal enum FaceAxis
 {
