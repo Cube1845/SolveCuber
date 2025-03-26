@@ -21,8 +21,6 @@ cube.RotateCube(CubeRotation.z2);
 
 CubeDisplayer.DisplayCube(cube);
 
-F2LSolver.SolveF2l(cube);
-
 void DisplayMoves(List<CubeMove> moves)
 {
     Console.Write("\nMoves: ");
