@@ -14,4 +14,13 @@ internal static class F2LSolutions
         public static List<CubeMove> LeftHand_ThreeMover = [CubeMove.L_, CubeMove.U_, CubeMove.L];
         public static List<CubeMove> RightHand_ThreeMover = [CubeMove.R, CubeMove.U, CubeMove.R_];
     }
+
+    internal static class Case1
+    {
+        public static List<CubeMove> LeftHand_1 = [CubeMove.U_, CubeMove.F, CubeMove.U_, CubeMove.F_, CubeMove.U, CubeMove.L_, CubeMove.U_, CubeMove.L];
+        public static List<CubeMove> RightHand_1 = [CubeMove.U_, CubeMove.R, CubeMove.U, CubeMove.R_, CubeMove.U, CubeMove.R, CubeMove.U, CubeMove.R_];
+
+        //public static List<CubeMove> LeftHand_ThreeMover = [CubeMove.L_, CubeMove.U_, CubeMove.L];
+        //public static List<CubeMove> RightHand_ThreeMover = [CubeMove.R, CubeMove.U, CubeMove.R_];
+    }
 }
