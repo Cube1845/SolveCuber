@@ -44,4 +44,16 @@ internal static class F2LSolutions
         public static List<CubeMove> LeftHand_2 = [CubeMove.U2, CubeMove.L_, CubeMove.U_, CubeMove.L, CubeMove.U_, CubeMove.L_, CubeMove.U, CubeMove.L];
         public static List<CubeMove> RightHand_2 = [CubeMove.U2, CubeMove.R, CubeMove.U, CubeMove.R_, CubeMove.U, CubeMove.R, CubeMove.U_, CubeMove.R_];
     }
+    
+    internal static class IncorrectlyConnectedPieces
+    {
+        public static List<CubeMove> LeftHand_1 = [CubeMove.L_, CubeMove.U, CubeMove.L, CubeMove.U2, CubeMove.F, CubeMove.U, CubeMove.F_];
+        public static List<CubeMove> RightHand_1 = [CubeMove.R, CubeMove.U_, CubeMove.R_, CubeMove.U2, CubeMove.F_, CubeMove.U_, CubeMove.F];
+
+        public static List<CubeMove> LeftHand_2 = [CubeMove.L_, CubeMove.U2, CubeMove.L, CubeMove.U, CubeMove.L_, CubeMove.U_, CubeMove.L];
+        public static List<CubeMove> RightHand_2 = [CubeMove.R, CubeMove.U2, CubeMove.R_, CubeMove.U_, CubeMove.R, CubeMove.U, CubeMove.R_];
+
+        public static List<CubeMove> LeftHand_3 = [];
+        public static List<CubeMove> RightHand_3 = [CubeMove.F, CubeMove.U, CubeMove.R, CubeMove.U_, CubeMove.R_, CubeMove.F_, CubeMove.R, CubeMove.U_, CubeMove.R_];
+    }
 }
