@@ -60,13 +60,13 @@ public static class F2LSolver
 
         foreach (var color in colorOrder)
         {
-
+            return [];
         }
     }
 
     private static List<CubeMove> GetMovesToPositionTheCorner(bool isCornerOnTop, PieceLocation cornerLocation, Cube cube)
     {
-
+        return [];
     }
 
     private static bool IsPairInCorrectPlace(WhiteCornerPosition cornerPosition, NonYellowEdgePosition edgePosition, CubeColor primaryColor, CubeColor secondaryColor)
