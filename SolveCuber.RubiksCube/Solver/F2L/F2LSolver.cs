@@ -8,14 +8,65 @@ namespace SolveCuber.Solver.F2L;
 
 public static class F2LSolver
 {
+    // Those are the first colors of the non white and yellow colors,
+    // for example Green means GreenOrange or Red means RedGreen (as in the WhiteCornerData or NonYellowEdgesData)
+    private readonly static List<List<CubeColor>> _pairSolvingOrders =
+    [
+        [CubeColor.Green, CubeColor.Orange, CubeColor.Red, CubeColor.Blue],
+        [CubeColor.Green, CubeColor.Orange, CubeColor.Blue, CubeColor.Red],
+        [CubeColor.Green, CubeColor.Red, CubeColor.Blue, CubeColor.Orange],
+        [CubeColor.Green, CubeColor.Red, CubeColor.Orange, CubeColor.Blue],
+        [CubeColor.Green, CubeColor.Blue, CubeColor.Orange, CubeColor.Red],
+        [CubeColor.Green, CubeColor.Blue, CubeColor.Red, CubeColor.Orange],
+
+        [CubeColor.Orange, CubeColor.Green, CubeColor.Red, CubeColor.Blue],
+        [CubeColor.Orange, CubeColor.Green, CubeColor.Blue, CubeColor.Red],
+        [CubeColor.Orange, CubeColor.Red, CubeColor.Blue, CubeColor.Green],
+        [CubeColor.Orange, CubeColor.Red, CubeColor.Green, CubeColor.Blue],
+        [CubeColor.Orange, CubeColor.Blue, CubeColor.Green, CubeColor.Red],
+        [CubeColor.Orange, CubeColor.Blue, CubeColor.Red, CubeColor.Green],
+
+        [CubeColor.Red, CubeColor.Orange, CubeColor.Green, CubeColor.Blue],
+        [CubeColor.Red, CubeColor.Orange, CubeColor.Blue, CubeColor.Green],
+        [CubeColor.Red, CubeColor.Green, CubeColor.Blue, CubeColor.Orange],
+        [CubeColor.Red, CubeColor.Green, CubeColor.Orange, CubeColor.Blue],
+        [CubeColor.Red, CubeColor.Blue, CubeColor.Orange, CubeColor.Green],
+        [CubeColor.Red, CubeColor.Blue, CubeColor.Green, CubeColor.Orange],
+
+        [CubeColor.Blue, CubeColor.Orange, CubeColor.Red, CubeColor.Green],
+        [CubeColor.Blue, CubeColor.Orange, CubeColor.Green, CubeColor.Red],
+        [CubeColor.Blue, CubeColor.Red, CubeColor.Green, CubeColor.Orange],
+        [CubeColor.Blue, CubeColor.Red, CubeColor.Orange, CubeColor.Green],
+        [CubeColor.Blue, CubeColor.Green, CubeColor.Orange, CubeColor.Red],
+        [CubeColor.Blue, CubeColor.Green, CubeColor.Red, CubeColor.Orange],
+    ];
+
     public static List<CubeMove> SolveF2l(Cube cube)
+    {
+        foreach (var color in _pairSolvingOrders)
+        {
+
+        }
+
+        return [];
+    }
+
+    private static List<CubeMove> GetSolvingF2LMoves(Cube cube, List<CubeColor> colorOrder)
     {
         var cornersData = CornerPositionHelper.LocateCorners(cube);
         var edgesData = EdgePositionHelper.LocateEdges(cube);
 
+        var cubeCopy = cube.DeepCopy();
 
+        foreach (var color in colorOrder)
+        {
 
-        return [];
+        }
+    }
+
+    private static List<CubeMove> GetMovesToPositionTheCorner(bool isCornerOnTop, PieceLocation cornerLocation, Cube cube)
+    {
+
     }
 
     private static bool IsPairInCorrectPlace(WhiteCornerPosition cornerPosition, NonYellowEdgePosition edgePosition, CubeColor primaryColor, CubeColor secondaryColor)
