@@ -1,4 +1,5 @@
-﻿using SolveCuber.CubeModel;
+﻿using SolveCuber.Common;
+using SolveCuber.CubeModel;
 using SolveCuber.CubeModel.Models;
 using SolveCuber.Solver.F2L.Positioning;
 using SolveCuber.Solver.F2L.Positioning.Corners;
@@ -60,13 +61,61 @@ public static class F2LSolver
 
         foreach (var color in colorOrder)
         {
-            return [];
+            
         }
+
+        return [];
     }
 
-    private static List<CubeMove> GetMovesToPositionTheCorner(bool isCornerOnTop, PieceLocation cornerLocation, Cube cube)
+    private static List<CubeMove> GetMovesToPositionTheCorner(CubeColor firstColor, Cube cube)
     {
-        return [];
+        var cubeCopy = cube.DeepCopy();
+
+        var orientingMoves = OrientCubeToSolvePair(firstColor, cube);
+
+        cubeCopy.ExecuteAlgorithm(orientingMoves);
+
+        var cornerPosition = CornerPositionHelper.LocateCorners(cube).GetCornerPosition(firstColor);
+
+        List<CubeMove> positioningMoves = cornerPosition.IsOnTop
+            ? cornerPosition.Location switch
+            {
+                PieceLocation.FrontLeft => [CubeMove.U_],
+                PieceLocation.BackRight => [CubeMove.U],
+                PieceLocation.BackLeft => [CubeMove.U2],
+
+                _ => []
+            }
+            : cornerPosition.Location switch
+            {
+                PieceLocation.FrontLeft => [CubeMove.L_, CubeMove.U_, CubeMove.L],
+                PieceLocation.FrontRight => [CubeMove.R, CubeMove.U_, CubeMove.R_],
+                PieceLocation.BackRight => [CubeMove.B, CubeMove.U, CubeMove.B_],
+                PieceLocation.BackLeft => [CubeMove.L, CubeMove.U2, CubeMove.L_],
+
+                _ => throw new NotImplementedException()
+            };
+
+        return [.. orientingMoves, .. positioningMoves];
+    }
+
+    private static List<CubeMove> OrientCubeToSolvePair(CubeColor frontTargetColor, Cube cube)
+    {
+        var cubeCopy = cube.DeepCopy();
+
+        CubeColor currentFrontColor = cube.Front.Face[1, 1];
+
+        List<CubeMove> rotations = [];
+
+        while (currentFrontColor != frontTargetColor)
+        {
+            cubeCopy.ExecuteMove(CubeMove.y);
+            rotations.Add(CubeMove.y);
+
+            currentFrontColor = cubeCopy.Front.Face[1, 1];
+        }
+
+        return MoveOptimizer.OptimizeMoves(rotations);
     }
 
     private static bool IsPairInCorrectPlace(WhiteCornerPosition cornerPosition, NonYellowEdgePosition edgePosition, CubeColor primaryColor, CubeColor secondaryColor)

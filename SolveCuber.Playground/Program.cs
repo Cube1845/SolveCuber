@@ -17,7 +17,7 @@ var solvingCrossMoves = WhiteCrossSolver.SolveCross(cube);
 
 DisplayMoves(solvingCrossMoves);
 
-cube.RotateCube(CubeRotation.z2);
+cube.ExecuteMove(CubeMove.z2);
 
 CubeDisplayer.DisplayCube(cube);
 
