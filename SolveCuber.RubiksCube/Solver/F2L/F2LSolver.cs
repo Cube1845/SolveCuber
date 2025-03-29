@@ -54,17 +54,30 @@ public static class F2LSolver
 
     private static List<CubeMove> GetSolvingF2LMoves(Cube cube, List<CubeColor> colorOrder)
     {
-        var cornersData = CornerPositionHelper.LocateCorners(cube);
-        var edgesData = EdgePositionHelper.LocateEdges(cube);
-
-        var cubeCopy = cube.DeepCopy();
+        List<CubeMove> solvingF2LMoves = [];
 
         foreach (var color in colorOrder)
         {
-            
+            var cornersData = CornerPositionHelper.LocateCorners(cube);
+            var edgesData = EdgePositionHelper.LocateEdges(cube);
+
+            bool isInCorrectPlace =
+                IsPairInCorrectPlace(cornersData.GetCornerPosition(color), edgesData.GetEdgePosition(color), color, cube.Front.Face[1, 1]);
+
+            if (isInCorrectPlace)
+            {
+                continue;
+            }
+
+            List<CubeMove> solvingPairMoves = [];
+
+            solvingPairMoves.AddRange(GetMovesToPositionTheCorner(color, cube));
+            //addrange the f2l case
+
+            solvingF2LMoves.AddRange(solvingPairMoves);
         }
 
-        return [];
+        return MoveOptimizer.OptimizeMoves(solvingF2LMoves);
     }
 
     private static List<CubeMove> GetMovesToPositionTheCorner(CubeColor firstColor, Cube cube)
@@ -118,63 +131,72 @@ public static class F2LSolver
         return MoveOptimizer.OptimizeMoves(rotations);
     }
 
-    private static bool IsPairInCorrectPlace(WhiteCornerPosition cornerPosition, NonYellowEdgePosition edgePosition, CubeColor primaryColor, CubeColor secondaryColor)
+    private static bool IsPairInCorrectPlace(WhiteCornerPosition cornerPosition, NonYellowEdgePosition edgePosition, CubeColor firstColor, CubeColor frontFaceCenterColor)
     {
-        bool isCornerInCorrectPlace;
-        bool isEdgeInCorrectPlace;
+        var correctLocation = GetCorrectPieceLocation(firstColor, frontFaceCenterColor);
 
-        if (primaryColor == CubeColor.Red || primaryColor == CubeColor.Orange || secondaryColor == CubeColor.Green || secondaryColor == CubeColor.Blue)
+        bool isCornerInCorrectLocation = 
+            !cornerPosition.IsOnTop &&
+            cornerPosition.Location == GetCorrectPieceLocation(firstColor, frontFaceCenterColor) &&
+            cornerPosition.WhiteStickerFaceAxis == FaceAxis.Y;
+
+        bool isEdgeInCorrectLocation =
+            !edgePosition.IsOnTop &&
+            edgePosition.Location == GetCorrectPieceLocation(firstColor, frontFaceCenterColor) &&
+            edgePosition.PrimaryColorFaceAxis == GetCorrectEdgeFaceAxis(frontFaceCenterColor);
+
+        return isCornerInCorrectLocation && isEdgeInCorrectLocation;
+    }
+
+    private static FaceAxis GetCorrectEdgeFaceAxis(CubeColor frontFaceCenterColor)
+    {
+        return frontFaceCenterColor == CubeColor.Green || frontFaceCenterColor == CubeColor.Blue
+            ? FaceAxis.Z
+            : FaceAxis.X;
+    }
+
+    private static PieceLocation GetCorrectPieceLocation(CubeColor firstColor, CubeColor frontFaceCenterColor)
+    {
+        return frontFaceCenterColor switch
         {
-            throw new Exception("Primary colors are blue and green, secondary colors are red and orange.");
-        }
-
-        if (primaryColor == CubeColor.Green)
-        {
-            if (secondaryColor == CubeColor.Orange)
+            CubeColor.Green => firstColor switch
             {
-                isCornerInCorrectPlace = !cornerPosition.IsOnTop &&
-                    cornerPosition.WhiteStickerFaceAxis == FaceAxis.Y &&
-                    cornerPosition.Location == PieceLocation.FrontRight;
+                CubeColor.Green => PieceLocation.FrontRight,
+                CubeColor.Orange => PieceLocation.BackRight,
+                CubeColor.Blue => PieceLocation.BackLeft,
+                CubeColor.Red => PieceLocation.FrontLeft,
 
-                isEdgeInCorrectPlace = !edgePosition.IsOnTop &&
-                    edgePosition.PrimaryColorFaceAxis == FaceAxis.Z &&
-                    edgePosition.Location == PieceLocation.FrontRight;
-            }
-            else
+                _ => throw new NotImplementedException()
+            },
+            CubeColor.Orange => firstColor switch
             {
-                isCornerInCorrectPlace = !cornerPosition.IsOnTop &&
-                    cornerPosition.WhiteStickerFaceAxis == FaceAxis.Y &&
-                    cornerPosition.Location == PieceLocation.FrontLeft;
+                CubeColor.Orange => PieceLocation.FrontRight,
+                CubeColor.Blue => PieceLocation.BackRight,
+                CubeColor.Red => PieceLocation.BackLeft,
+                CubeColor.Green => PieceLocation.FrontLeft,
 
-                isEdgeInCorrectPlace = !edgePosition.IsOnTop &&
-                    edgePosition.PrimaryColorFaceAxis == FaceAxis.Z &&
-                    edgePosition.Location == PieceLocation.FrontLeft;
-            }
-        }
-        else
-        {
-            if (secondaryColor == CubeColor.Orange)
+                _ => throw new NotImplementedException()
+            },
+            CubeColor.Blue => firstColor switch
             {
-                isCornerInCorrectPlace = !cornerPosition.IsOnTop &&
-                    cornerPosition.WhiteStickerFaceAxis == FaceAxis.Y &&
-                    cornerPosition.Location == PieceLocation.BackRight;
+                CubeColor.Blue => PieceLocation.FrontRight,
+                CubeColor.Red => PieceLocation.BackRight,
+                CubeColor.Green => PieceLocation.BackLeft,
+                CubeColor.Orange => PieceLocation.FrontLeft,
 
-                isEdgeInCorrectPlace = !edgePosition.IsOnTop &&
-                    edgePosition.PrimaryColorFaceAxis == FaceAxis.Z &&
-                    edgePosition.Location == PieceLocation.BackRight;
-            }
-            else
+                _ => throw new NotImplementedException()
+            },
+            CubeColor.Red => firstColor switch
             {
-                isCornerInCorrectPlace = !cornerPosition.IsOnTop &&
-                    cornerPosition.WhiteStickerFaceAxis == FaceAxis.Y &&
-                    cornerPosition.Location == PieceLocation.BackLeft;
+                CubeColor.Red => PieceLocation.FrontRight,
+                CubeColor.Green => PieceLocation.BackRight,
+                CubeColor.Orange => PieceLocation.BackLeft,
+                CubeColor.Blue => PieceLocation.FrontLeft,
 
-                isEdgeInCorrectPlace = !edgePosition.IsOnTop &&
-                    edgePosition.PrimaryColorFaceAxis == FaceAxis.Z &&
-                    edgePosition.Location == PieceLocation.BackLeft;
-            }
-        }
+                _ => throw new NotImplementedException()
+            },
 
-        return isCornerInCorrectPlace && isEdgeInCorrectPlace;
+            _ => throw new NotImplementedException()
+        };
     }
 }
