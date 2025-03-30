@@ -4,6 +4,7 @@ using SolveCuber.CubeModel.Models;
 using SolveCuber.Solver.F2L.Positioning;
 using SolveCuber.Solver.F2L.Positioning.Corners;
 using SolveCuber.Solver.F2L.Positioning.Edges;
+using System.Drawing;
 
 namespace SolveCuber.Solver.F2L;
 
@@ -44,12 +45,31 @@ public static class F2LSolver
 
     public static List<CubeMove> SolveF2l(Cube cube)
     {
-        foreach (var color in _pairSolvingOrders)
+        if (IsF2lSolved(cube))
         {
-
+            return [];
         }
 
-        return [];
+        var solutionWithLeastMoves = GetSolutionWithLeastMoves(cube);
+
+        cube.ExecuteAlgorithm(solutionWithLeastMoves);
+
+        return solutionWithLeastMoves;
+    }
+
+    private static List<CubeMove> GetSolutionWithLeastMoves(Cube cube)
+    {
+        List<List<CubeMove>> solutions = [];
+
+        foreach (var colorOrder in _pairSolvingOrders)
+        {
+            var solution = GetSolvingF2LMoves(cube, colorOrder);
+            solutions.Add(solution);
+        }
+
+        var orderedSolutions = solutions.OrderBy(s => s.Count).ToList();
+
+        return orderedSolutions[0];
     }
 
     private static List<CubeMove> GetSolvingF2LMoves(Cube cube, List<CubeColor> colorOrder)
@@ -129,6 +149,19 @@ public static class F2LSolver
         }
 
         return MoveOptimizer.OptimizeMoves(rotations);
+    }
+
+    private static bool IsF2lSolved(Cube cube)
+    {
+        var cornersData = CornerPositionHelper.LocateCorners(cube);
+        var edgesData = EdgePositionHelper.LocateEdges(cube);
+
+        var frontFaceCenterColor = cube.Front.Face[1, 1];
+
+        return IsPairInCorrectPlace(cornersData.GreenOrange, edgesData.GreenOrange, CubeColor.Green, frontFaceCenterColor)
+            && IsPairInCorrectPlace(cornersData.OrangeBlue, edgesData.OrangeBlue, CubeColor.Orange, frontFaceCenterColor)
+            && IsPairInCorrectPlace(cornersData.BlueRed, edgesData.BlueRed, CubeColor.Blue, frontFaceCenterColor)
+            && IsPairInCorrectPlace(cornersData.RedGreen, edgesData.RedGreen, CubeColor.Red, frontFaceCenterColor);
     }
 
     private static bool IsPairInCorrectPlace(WhiteCornerPosition cornerPosition, NonYellowEdgePosition edgePosition, CubeColor firstColor, CubeColor frontFaceCenterColor)
