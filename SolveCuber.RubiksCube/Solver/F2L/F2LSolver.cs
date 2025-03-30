@@ -58,11 +58,11 @@ public static class F2LSolver
 
         foreach (var color in colorOrder)
         {
-            var cornersData = CornerPositionHelper.LocateCorners(cube);
-            var edgesData = EdgePositionHelper.LocateEdges(cube);
+            var cornerData = CornerPositionHelper.LocateCorners(cube).GetCornerPosition(color);
+            var edgeData = EdgePositionHelper.LocateEdges(cube).GetEdgePosition(color);
 
             bool isInCorrectPlace =
-                IsPairInCorrectPlace(cornersData.GetCornerPosition(color), edgesData.GetEdgePosition(color), color, cube.Front.Face[1, 1]);
+                IsPairInCorrectPlace(cornerData, edgeData, color, cube.Front.Face[1, 1]);
 
             if (isInCorrectPlace)
             {
@@ -72,7 +72,7 @@ public static class F2LSolver
             List<CubeMove> solvingPairMoves = [];
 
             solvingPairMoves.AddRange(GetMovesToPositionTheCorner(color, cube));
-            //addrange the f2l case
+            solvingPairMoves.AddRange(F2LSolutions.GetF2lSolution(cornerData, edgeData, color));
 
             solvingF2LMoves.AddRange(solvingPairMoves);
         }

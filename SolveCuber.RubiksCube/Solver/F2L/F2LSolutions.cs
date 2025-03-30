@@ -4,7 +4,7 @@ namespace SolveCuber.Solver.F2L;
 
 // link https://www.cubeskills.com/uploads/pdf/tutorials/f2l.pdf
 
-internal static class F2LSolutions
+internal static partial class F2LSolutions
 {
     internal static class WhiteFaceZAxis
     {
