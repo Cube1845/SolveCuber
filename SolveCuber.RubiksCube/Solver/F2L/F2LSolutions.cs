@@ -96,26 +96,26 @@ internal static partial class F2LSolutions
         {
             internal static class EdgeFrontRight
             {
-                public static List<CubeMove> YXFaceSameColor = [];
-                public static List<CubeMove> YXFaceDifferentColor = [];
+                public static List<CubeMove> YXFaceSameColor = [CubeMove.U, CubeMove.R, CubeMove.U, CubeMove.R_, CubeMove.U2, CubeMove.R, CubeMove.U, CubeMove.R_];
+                public static List<CubeMove> YXFaceDifferentColor = [CubeMove.U, CubeMove.F_, CubeMove.U_, CubeMove.F, CubeMove.U_, CubeMove.R, CubeMove.U, CubeMove.R_];
             }
 
             internal static class EdgeFrontLeft
             {
-                public static List<CubeMove> YXFaceSameColor = [];
-                public static List<CubeMove> YXFaceDifferentColor = [];
+                public static List<CubeMove> YXFaceSameColor = [CubeMove.U_, CubeMove.L_, CubeMove.U, CubeMove.L, CubeMove.R, CubeMove.U, CubeMove.R_];
+                public static List<CubeMove> YXFaceDifferentColor = [CubeMove.U2, CubeMove.L_, CubeMove.U, CubeMove.L, CubeMove.F_, CubeMove.U2, CubeMove.F];
             }
 
             internal static class EdgeBackRight
             {
-                public static List<CubeMove> YXFaceSameColor = [];
-                public static List<CubeMove> YXFaceDifferentColor = [];
+                public static List<CubeMove> YXFaceSameColor = [CubeMove.R_, CubeMove.U_, CubeMove.R2, CubeMove.U, CubeMove.R_];
+                public static List<CubeMove> YXFaceDifferentColor = [CubeMove.R_, CubeMove.U, CubeMove.R, CubeMove.d_, CubeMove.L_, CubeMove.U, CubeMove.L];
             }
 
             internal static class EdgeBackLeft
             {
-                public static List<CubeMove> YXFaceSameColor = [];
-                public static List<CubeMove> YXFaceDifferentColor = [];
+                public static List<CubeMove> YXFaceSameColor = [CubeMove.U_, CubeMove.L, CubeMove.U, CubeMove.L_, CubeMove.R, CubeMove.U, CubeMove.R_];
+                public static List<CubeMove> YXFaceDifferentColor = [CubeMove.y, CubeMove.R_, CubeMove.U, CubeMove.R, CubeMove.U_, CubeMove.y_, CubeMove.R, CubeMove.U, CubeMove.R_];
             }
         }
     }
@@ -127,25 +127,25 @@ internal static partial class F2LSolutions
             internal static class EdgeFrontRight
             {
                 public static List<CubeMove> ZYFaceSameColor = [CubeMove.F, CubeMove.U, CubeMove.R, CubeMove.U_, CubeMove.R_, CubeMove.F_, CubeMove.R_, CubeMove.U_, CubeMove.R_];
-                public static List<CubeMove> ZYFacesDifferentColor = [CubeMove.R, CubeMove.U2, CubeMove.R_, CubeMove.U_, CubeMove.R, CubeMove.U, CubeMove.R_];
+                public static List<CubeMove> ZYFaceDifferentColor = [CubeMove.R, CubeMove.U2, CubeMove.R_, CubeMove.U_, CubeMove.R, CubeMove.U, CubeMove.R_];
             }
 
             internal static class EdgeFrontLeft
             {
-                public static List<CubeMove> YFacesSameColor = [];
-                public static List<CubeMove> YFacesDifferentColor = [];
+                public static List<CubeMove> ZYFaceSameColor = [CubeMove.y_, CubeMove.R_, CubeMove.U2, CubeMove.R, CubeMove.U, CubeMove.R_, CubeMove.U_, CubeMove.R];
+                public static List<CubeMove> ZYFaceDifferentColor = [CubeMove.R, CubeMove.U, CubeMove.R_, CubeMove.U2, CubeMove.R, CubeMove.U, CubeMove.R_, CubeMove.U_, CubeMove.R, CubeMove.U, CubeMove.R_];
             }
 
             internal static class EdgeBackRight
             {
-                public static List<CubeMove> YFacesSameColor = [];
-                public static List<CubeMove> YFacesDifferentColor = [];
+                public static List<CubeMove> ZYFaceSameColor = [CubeMove.F_, CubeMove.L_, CubeMove.U2, CubeMove.L, CubeMove.F];
+                public static List<CubeMove> ZYFaceDifferentColor = [CubeMove.U, CubeMove.R, CubeMove.U2, CubeMove.R_, CubeMove.U, CubeMove.R, CubeMove.U_, CubeMove.R_];
             }
 
             internal static class EdgeBackLeft
             {
-                public static List<CubeMove> YFacesSameColor = [];
-                public static List<CubeMove> YFacesDifferentColor = [];
+                public static List<CubeMove> ZYFaceSameColor = [CubeMove.y_, CubeMove.U_, CubeMove.R_, CubeMove.U2, CubeMove.R, CubeMove.U_, CubeMove.R_, CubeMove.U, CubeMove.R];
+                public static List<CubeMove> ZYFaceDifferentColor = [CubeMove.R, CubeMove.U_, CubeMove.R_, CubeMove.U2, CubeMove.R, CubeMove.U, CubeMove.R_];
             }
         }
 
