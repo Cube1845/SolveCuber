@@ -153,26 +153,26 @@ internal static partial class F2LSolutions
         {
             internal static class EdgeFrontRight
             {
-                public static List<CubeMove> YXFaceSameColor = [];
-                public static List<CubeMove> YXFaceDifferentColor = [];
+                public static List<CubeMove> ZFacesSameColor = [CubeMove.R, CubeMove.U_, CubeMove.R_, CubeMove.d, CubeMove.R_, CubeMove.U, CubeMove.R];
+                public static List<CubeMove> ZFacesDifferentColor = [CubeMove.U, CubeMove.R, CubeMove.U_, CubeMove.R_, CubeMove.U, CubeMove.R, CubeMove.U_, CubeMove.R_, CubeMove.U, CubeMove.R, CubeMove.U_, CubeMove.R_];
             }
 
             internal static class EdgeFrontLeft
             {
-                public static List<CubeMove> YXFaceSameColor = [];
-                public static List<CubeMove> YXFaceDifferentColor = [];
+                public static List<CubeMove> ZFacesSameColor = [CubeMove.U_, CubeMove.L_, CubeMove.U, CubeMove.L, CubeMove.F_, CubeMove.L_, CubeMove.U2, CubeMove.L, CubeMove.F];
+                public static List<CubeMove> ZFacesDifferentColor = [CubeMove.L_, CubeMove.U2, CubeMove.L, CubeMove.U_, CubeMove.R, CubeMove.U, CubeMove.R_];
             }
 
             internal static class EdgeBackRight
             {
-                public static List<CubeMove> YXFaceSameColor = [];
-                public static List<CubeMove> YXFaceDifferentColor = [];
+                public static List<CubeMove> ZFacesSameColor = [CubeMove.R_, CubeMove.U_, CubeMove.R, CubeMove.F_, CubeMove.L_, CubeMove.U2, CubeMove.L, CubeMove.F];
+                public static List<CubeMove> ZFacesDifferentColor = [CubeMove.U_, CubeMove.R_, CubeMove.U, CubeMove.R2, CubeMove.U_, CubeMove.R_];
             }
 
             internal static class EdgeBackLeft
             {
-                public static List<CubeMove> YXFaceSameColor = [];
-                public static List<CubeMove> YXFaceDifferentColor = [];
+                public static List<CubeMove> ZFacesSameColor = [CubeMove.y_, CubeMove.U2, CubeMove.F, CubeMove.R_, CubeMove.U, CubeMove.R, CubeMove.F_];
+                public static List<CubeMove> ZFacesDifferentColor = [CubeMove.y_, CubeMove.R_, CubeMove.U, CubeMove.R, CubeMove.U_, CubeMove.R_, CubeMove.U_, CubeMove.R, CubeMove.L_, CubeMove.U2, CubeMove.L];
             }
         }
     }
