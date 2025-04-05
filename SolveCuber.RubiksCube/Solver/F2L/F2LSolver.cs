@@ -4,7 +4,6 @@ using SolveCuber.CubeModel.Models;
 using SolveCuber.Solver.F2L.Positioning;
 using SolveCuber.Solver.F2L.Positioning.Corners;
 using SolveCuber.Solver.F2L.Positioning.Edges;
-using System.Drawing;
 
 namespace SolveCuber.Solver.F2L;
 
@@ -43,7 +42,7 @@ public static class F2LSolver
         [CubeColor.Blue, CubeColor.Green, CubeColor.Red, CubeColor.Orange],
     ];
 
-    public static List<CubeMove> SolveF2l(Cube cube)
+    public static List<CubeMove> SolveF2L(Cube cube)
     {
         if (IsF2lSolved(cube))
         {

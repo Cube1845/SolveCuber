@@ -1,14 +1,13 @@
 ﻿using SolveCuber.CubeModel;
 using SolveCuber.CubeModel.Models;
-using System.ComponentModel;
 
 namespace SolveCuber.Playground;
 
-internal static class CubeDisplayer
+public static class CubeDisplayer
 {
     private static readonly string _empty = "  ";
 
-    internal static void DisplayCube(Cube cube)
+    public static void DisplayCube(Cube cube)
     {
         Console.WriteLine("Cube: \n");
 

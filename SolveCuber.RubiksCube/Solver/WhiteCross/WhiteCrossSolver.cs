@@ -171,17 +171,15 @@ public static class WhiteCrossSolver
     {
         WhiteEdgesData edgesData = GetWhiteEdgeLocations(cube);
 
-        bool isCrossSolved = true;
-
         foreach (var color in _secondWhiteEdgeColors)
         {
             if (!WhiteEdgePositioningHelper.IsInCorrectPlace(color, edgesData.GetLocation(color)))
             {
-                isCrossSolved = false;
+                return false;
             }
         }
 
-        return isCrossSolved;
+        return true;
     }
 
     private static WhiteEdgesData GetWhiteEdgeLocations(Cube cube)

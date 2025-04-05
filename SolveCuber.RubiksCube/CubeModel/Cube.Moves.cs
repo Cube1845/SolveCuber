@@ -354,7 +354,7 @@ public partial struct Cube
 
     private void ExecuteDoubleEquatorMove()
     {
-        DoubleMoveColorsAroundXAxis(1);
+        DoubleMoveColorsAroundYAxis(1);
     }
 
     // S moves
