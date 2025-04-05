@@ -1,4 +1,5 @@
 ﻿using SolveCuber.CubeModel;
+using SolveCuber.CubeModel.Models;
 using SolveCuber.Solver.F2L.Positioning;
 using SolveCuber.Solver.F2L.Positioning.Corners;
 using SolveCuber.Solver.F2L.Positioning.Edges;
@@ -7,8 +8,11 @@ namespace SolveCuber.Solver.F2L;
 
 internal static partial class F2LSolutions
 {
-    public static List<CubeMove> GetF2lSolution(WhiteCornerPosition cornerPosition, NonYellowEdgePosition edgePosition, CubeColor firstColor)
+    public static List<CubeMove> GetF2lSolution(Cube cube, CubeColor firstColor)
     {
+        var cornerPosition = CornerPositionHelper.LocateCorners(cube).GetCornerPosition(firstColor);
+        var edgePosition = EdgePositionHelper.LocateEdges(cube).GetEdgePosition(firstColor);
+
         return cornerPosition.WhiteStickerFaceAxis switch
         {
             FaceAxis.Z => RecognizeWhieFaceZAxisCase(cornerPosition, edgePosition, firstColor),

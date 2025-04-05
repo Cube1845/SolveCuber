@@ -47,7 +47,7 @@ public static class WhiteCrossSolver
             return [];
         }
 
-        List<CubeMove> moves = [];
+        CubeMove? firstUMove = null;
 
         if (IsAnyWhiteEdgeOnUpFace(cube))
         {
@@ -56,17 +56,19 @@ public static class WhiteCrossSolver
             if (topFaceWhiteEdgePositioningMove != null)
             {
                 cube.ExecuteMove(topFaceWhiteEdgePositioningMove!.Value);
-                moves.Add(topFaceWhiteEdgePositioningMove!.Value);
+                firstUMove = topFaceWhiteEdgePositioningMove!.Value;
             }
         }
 
-        moves.AddRange(GetSolutionWithLeastMoves(cube));
+        var moves = GetSolutionWithLeastMoves(cube);
 
-        var optimizedMoves = MoveOptimizer.OptimizeMoves(moves);
+        cube.ExecuteAlgorithm(moves);
 
-        cube.ExecuteAlgorithm(optimizedMoves);
+        List<CubeMove> fullMoves = firstUMove is not null
+            ? [firstUMove.Value, .. moves]
+            : [.. moves];
 
-        return optimizedMoves;
+        return MoveOptimizer.OptimizeMoves(fullMoves);
     }
 
     private static CubeMove? GetMoveThatPositionsTheMostEdgesCorrect(Cube cube)
@@ -162,6 +164,11 @@ public static class WhiteCrossSolver
             cubeCopy.ExecuteAlgorithm(currentMoves);
 
             moves.AddRange(currentMoves);
+        }
+
+        if (!IsCrossSolved(cubeCopy))
+        {
+            throw new Exception();
         }
 
         return MoveOptimizer.OptimizeMoves(moves);

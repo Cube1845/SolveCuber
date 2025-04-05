@@ -73,15 +73,17 @@ public static class F2LSolver
 
     private static List<CubeMove> GetSolvingF2LMoves(Cube cube, List<CubeColor> colorOrder)
     {
+        Cube cubeCopy = cube.DeepCopy();
+
         List<CubeMove> solvingF2LMoves = [];
 
         foreach (var color in colorOrder)
         {
-            var cornerData = CornerPositionHelper.LocateCorners(cube).GetCornerPosition(color);
-            var edgeData = EdgePositionHelper.LocateEdges(cube).GetEdgePosition(color);
+            var cornerData = CornerPositionHelper.LocateCorners(cubeCopy).GetCornerPosition(color);
+            var edgeData = EdgePositionHelper.LocateEdges(cubeCopy).GetEdgePosition(color);
 
             bool isInCorrectPlace =
-                IsPairInCorrectPlace(cornerData, edgeData, color, cube.Front.Face[1, 1]);
+                IsPairInCorrectPlace(cornerData, edgeData, color, cubeCopy.Front.Face[1, 1]);
 
             if (isInCorrectPlace)
             {
@@ -90,10 +92,17 @@ public static class F2LSolver
 
             List<CubeMove> solvingPairMoves = [];
 
-            solvingPairMoves.AddRange(GetMovesToPositionTheCorner(color, cube));
-            solvingPairMoves.AddRange(F2LSolutions.GetF2lSolution(cornerData, edgeData, color));
+            var positioningMoves = GetMovesToPositionTheCorner(color, cubeCopy);
 
-            solvingF2LMoves.AddRange(solvingPairMoves);
+            cubeCopy.ExecuteAlgorithm(positioningMoves);
+            solvingPairMoves.AddRange(positioningMoves);
+
+            var solution = F2LSolutions.GetF2lSolution(cubeCopy, color);
+
+            cubeCopy.ExecuteAlgorithm(solution);
+            solvingPairMoves.AddRange(solution);
+
+            solvingF2LMoves.AddRange(MoveOptimizer.OptimizeMoves(solvingPairMoves));
         }
 
         return MoveOptimizer.OptimizeMoves(solvingF2LMoves);
@@ -103,20 +112,21 @@ public static class F2LSolver
     {
         var cubeCopy = cube.DeepCopy();
 
-        var orientingMoves = OrientCubeToSolvePair(firstColor, cube);
+        var orientingMoves = OrientCubeToSolvePair(firstColor, cubeCopy);
 
         cubeCopy.ExecuteAlgorithm(orientingMoves);
 
-        var cornerPosition = CornerPositionHelper.LocateCorners(cube).GetCornerPosition(firstColor);
+        var cornerPosition = CornerPositionHelper.LocateCorners(cubeCopy).GetCornerPosition(firstColor);
 
         List<CubeMove> positioningMoves = cornerPosition.IsOnTop
             ? cornerPosition.Location switch
             {
+                PieceLocation.FrontRight => [],
                 PieceLocation.FrontLeft => [CubeMove.U_],
                 PieceLocation.BackRight => [CubeMove.U],
                 PieceLocation.BackLeft => [CubeMove.U2],
 
-                _ => []
+                _ => throw new NotImplementedException()
             }
             : cornerPosition.Location switch
             {
@@ -133,21 +143,49 @@ public static class F2LSolver
 
     private static List<CubeMove> OrientCubeToSolvePair(CubeColor frontTargetColor, Cube cube)
     {
-        var cubeCopy = cube.DeepCopy();
-
         CubeColor currentFrontColor = cube.Front.Face[1, 1];
 
-        List<CubeMove> rotations = [];
-
-        while (currentFrontColor != frontTargetColor)
+        return currentFrontColor switch
         {
-            cubeCopy.ExecuteMove(CubeMove.y);
-            rotations.Add(CubeMove.y);
+            CubeColor.Green => frontTargetColor switch
+            {
+                CubeColor.Green => [],
+                CubeColor.Orange => [CubeMove.y],
+                CubeColor.Blue => [CubeMove.y2],
+                CubeColor.Red => [CubeMove.y_],
 
-            currentFrontColor = cubeCopy.Front.Face[1, 1];
-        }
+                _ => throw new NotImplementedException()
+            },
+            CubeColor.Orange => frontTargetColor switch
+            {
+                CubeColor.Green => [CubeMove.y_],
+                CubeColor.Orange => [],
+                CubeColor.Blue => [CubeMove.y],
+                CubeColor.Red => [CubeMove.y2],
 
-        return MoveOptimizer.OptimizeMoves(rotations);
+                _ => throw new NotImplementedException()
+            },
+            CubeColor.Blue => frontTargetColor switch
+            {
+                CubeColor.Green => [CubeMove.y2],
+                CubeColor.Orange => [CubeMove.y_],
+                CubeColor.Blue => [],
+                CubeColor.Red => [CubeMove.y],
+
+                _ => throw new NotImplementedException()
+            },
+            CubeColor.Red => frontTargetColor switch
+            {
+                CubeColor.Green => [CubeMove.y],
+                CubeColor.Orange => [CubeMove.y2],
+                CubeColor.Blue => [CubeMove.y_],
+                CubeColor.Red => [],
+
+                _ => throw new NotImplementedException()
+            },
+
+            _ => throw new NotImplementedException()
+        };
     }
 
     private static bool IsF2lSolved(Cube cube)
