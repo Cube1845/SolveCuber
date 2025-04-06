@@ -39,7 +39,7 @@ internal static partial class F2LSolutions
         {
             internal static class EdgeFrontRight
             {
-                public static List<CubeMove> YXFaceSameColor = [CubeMove.U_, CubeMove.R, CubeMove.U, CubeMove.R_, CubeMove.d_, CubeMove.R_, CubeMove.U_, CubeMove.R];
+                public static List<CubeMove> YXFaceSameColor = [CubeMove.U_, CubeMove.R, CubeMove.U, CubeMove.R_, CubeMove.d, CubeMove.R_, CubeMove.U_, CubeMove.R];
                 public static List<CubeMove> YXFaceDifferentColor = [CubeMove.U_, CubeMove.R, CubeMove.U_, CubeMove.R_, CubeMove.U2, CubeMove.R, CubeMove.U_, CubeMove.R_];
             }
 
@@ -123,6 +123,7 @@ internal static partial class F2LSolutions
     internal static class WhiteFaceYAxis
     {
         internal static class EdgeTopLayer
+
         {
             internal static class EdgeFrontRight
             {
