@@ -3,6 +3,7 @@ using SolveCuber.CubeModel.Models;
 using SolveCuber.Playground;
 using SolveCuber.Scramble;
 using SolveCuber.Solver.F2L;
+using SolveCuber.Solver.OLL;
 using SolveCuber.Solver.WhiteCross;
 
 Cube cube = new();
@@ -26,6 +27,8 @@ var solvingF2LMoves = F2LSolver.SolveF2L(cube);
 DisplayMoves(solvingF2LMoves);
 
 CubeDisplayer.DisplayCube(cube);
+
+OLLExecuter.ExecuteOLL(cube);
 
 void DisplayMoves(List<CubeMove> moves)
 {

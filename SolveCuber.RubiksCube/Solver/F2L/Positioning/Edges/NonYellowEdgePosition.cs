@@ -1,4 +1,6 @@
-﻿namespace SolveCuber.Solver.F2L.Positioning.Edges;
+﻿using SolveCuber.Solver.Common;
+
+namespace SolveCuber.Solver.F2L.Positioning.Edges;
 
 // Default cube position while solving F2L is yellow on top, facing green.
 internal struct NonYellowEdgePosition

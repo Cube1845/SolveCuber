@@ -1,5 +1,6 @@
 ﻿using SolveCuber.CubeModel;
 using SolveCuber.CubeModel.Models;
+using SolveCuber.Solver.Common;
 
 namespace SolveCuber.Solver.F2L.Positioning.Corners;
 
