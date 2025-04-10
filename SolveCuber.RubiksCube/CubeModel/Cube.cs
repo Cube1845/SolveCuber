@@ -1,6 +1,4 @@
-﻿using SolveCuber.Scramble;
-
-namespace SolveCuber.CubeModel.Models;
+﻿namespace SolveCuber.CubeModel.Models;
 
 public partial struct Cube()
 {
@@ -56,6 +54,7 @@ public partial struct Cube()
             CubeMove.L => ExecuteLeftMove,
             CubeMove.L_ => ExecuteLeftPrimeMove,
             CubeMove.L2 => ExecuteDoubleLeftMove,
+
             CubeMove.u => ExecuteUpWideMove,
             CubeMove.u_ => ExecuteUpWidePrimeMove,
             CubeMove.u2 => ExecuteDoubleUpWideMove,
@@ -74,6 +73,7 @@ public partial struct Cube()
             CubeMove.l => ExecuteLeftWideMove,
             CubeMove.l_ => ExecuteLeftWidePrimeMove,
             CubeMove.l2 => ExecuteDoubleLeftWideMove,
+
             CubeMove.M => ExecuteMiddleMove,
             CubeMove.M_ => ExecuteMiddlePrimeMove,
             CubeMove.M2 => ExecuteDoubleMiddleMove,
@@ -83,6 +83,17 @@ public partial struct Cube()
             CubeMove.S => ExecuteStandingMove,
             CubeMove.S_ => ExecuteStandingPrimeMove,
             CubeMove.S2 => ExecuteDoubleStandingMove,
+
+            CubeMove.x => ExecuteXRotation,
+            CubeMove.x_ => ExecuteXPrimeRotation,
+            CubeMove.x2 => ExecuteDoubleXRotation,
+            CubeMove.y => ExecuteYRotation,
+            CubeMove.y_ => ExecuteYPrimeRotation,
+            CubeMove.y2 => ExecuteDoubleYRotation,
+            CubeMove.z => ExecuteZRotation,
+            CubeMove.z_ => ExecuteZPrimeRotation,
+            CubeMove.z2 => ExecuteDoubleZRotation,
+
             _ => throw new NotImplementedException()
         };
 
