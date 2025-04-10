@@ -11,29 +11,38 @@ public static class OLLExecuter
     {
         var topLayerOrientations = YellowPiecesPositioningHelper.GetYellowPiecesFaceAxis(cube);
 
-        var algorithm = GetOLLAlgorithm(topLayerOrientations);
+        var algorithm = GetOLLAlgorithm(topLayerOrientations, cube);
 
         cube.ExecuteAlgorithm(algorithm);
 
         return algorithm;
     }
 
-    private static List<CubeMove> GetOLLAlgorithm(FaceAxis[,] topLayerOrientations)
+    private static List<CubeMove> GetOLLAlgorithm(FaceAxis[,] topLayerOrientations, Cube cube)
     {
         FaceAxis[,] clonedOrientations = (FaceAxis[,])topLayerOrientations.Clone();
+
+        Cube cubeCopy = cube.DeepCopy();
 
         List<CubeMove> setUpMoves = [];
         List<CubeMove>? ollAlgorithm = CheckOLLCases(clonedOrientations);
 
         while (ollAlgorithm == null || ollAlgorithm.Count == 0)
         {
-            clonedOrientations = RotateTopLayerOrientationsClockwise(clonedOrientations);
+            cubeCopy.ExecuteMove(CubeMove.U);
+
+            clonedOrientations = YellowPiecesPositioningHelper.GetYellowPiecesFaceAxis(cubeCopy);
             setUpMoves.Add(CubeMove.U);
 
             ollAlgorithm = CheckOLLCases(clonedOrientations);
+
+            if (setUpMoves.Count > 4)
+            {
+                throw new Exception("OLL case not found");
+            }
         }
 
-        return MoveOptimizer.OptimizeMoves([.. setUpMoves, ..ollAlgorithm]);
+        return MoveOptimizer.OptimizeMoves([.. setUpMoves, .. ollAlgorithm]);
     }
 
     private static List<CubeMove>? CheckOLLCases(FaceAxis[,] topLayerOrientations)
@@ -63,21 +72,5 @@ public static class OLLExecuter
         }
 
         return true;
-    }
-
-    private static FaceAxis[,] RotateTopLayerOrientationsClockwise(FaceAxis[,] topLayerOrientations)
-    {
-        FaceAxis[,] currentOrientations = (FaceAxis[,])topLayerOrientations.Clone();
-        FaceAxis[,] newOrientations = new FaceAxis[3, 3];
-
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                newOrientations[i, j] = currentOrientations[2 - j, i];
-            }
-        }
-
-        return newOrientations;
     }
 }
