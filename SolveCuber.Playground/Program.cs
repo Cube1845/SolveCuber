@@ -4,6 +4,7 @@ using SolveCuber.Playground;
 using SolveCuber.Scramble;
 using SolveCuber.Solver.F2L;
 using SolveCuber.Solver.OLL;
+using SolveCuber.Solver.PLL;
 using SolveCuber.Solver.WhiteCross;
 
 Cube cube = new();
@@ -28,6 +29,11 @@ CubeDisplayer.DisplayCube(cube);
 var oll = OLLExecuter.ExecuteOLL(cube);
 
 DisplayMoves(oll);
+CubeDisplayer.DisplayCube(cube);
+
+var pll = PLLExecuter.ExecutePLL(cube);
+
+DisplayMoves(pll);
 CubeDisplayer.DisplayCube(cube);
 
 void DisplayMoves(List<CubeMove> moves)

@@ -9,6 +9,16 @@ internal static class OLLAlgorithms
 {
     public static List<OLL> OLLs =
     [
+        new
+        (
+            new FaceAxis[3, 3]
+            {
+                { FaceAxis.Y, FaceAxis.Y, FaceAxis.Y },
+                { FaceAxis.Y, FaceAxis.Y, FaceAxis.Y },
+                { FaceAxis.Y, FaceAxis.Y, FaceAxis.Y }
+            },
+            []
+        ),
         // 1
         new
         (
