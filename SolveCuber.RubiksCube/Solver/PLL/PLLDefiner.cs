@@ -6,19 +6,26 @@ namespace SolveCuber.Solver.PLL;
 
 internal class PLLDefiner
 {
-    private readonly static int _pllCount = 21;
+    private readonly static int _pllCount = 11; //21
 
     public static List<CubeMove>? GetPLL(Cube cube)
     {
-        var cornersRepositionData = CornerRepositionDefiner.DefineCornersReposition(cube);
-        var edgesRepositionData = EdgeRepositionDefiner.DefineEdgesReposition(cube);
+        var cubeCopy = cube.DeepCopy();
 
-        for (int i = 1; i <= _pllCount; i++)
+        for (int i = 0; i < 4; i++)
         {
-            if (IsPLL(cornersRepositionData, edgesRepositionData, (Models.PLL)i))
+            var cornersRepositionData = CornerRepositionDefiner.DefineCornersReposition(cubeCopy);
+            var edgesRepositionData = EdgeRepositionDefiner.DefineEdgesReposition(cubeCopy);
+
+            for (int j = 1; j <= _pllCount; j++)
             {
-                return PLLAlgorithms.GetPLL((Models.PLL)i);
+                if (IsPLL(cornersRepositionData, edgesRepositionData, (Models.PLL)i))
+                {
+                    return PLLAlgorithms.GetPLL((Models.PLL)i);
+                }
             }
+
+            cubeCopy.ExecuteMove(CubeMove.d);
         }
 
         return null;
