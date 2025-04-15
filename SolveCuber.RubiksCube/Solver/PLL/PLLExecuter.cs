@@ -28,7 +28,7 @@ public class PLLExecuter
 
             setUpMoves.Add(CubeMove.U);
 
-            pll = PLLDefiner.GetPLL(cube);
+            pll = PLLDefiner.GetPLL(cubeCopy);
 
             if (setUpMoves.Count >= 4)
             {

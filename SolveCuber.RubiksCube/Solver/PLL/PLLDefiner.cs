@@ -10,9 +10,12 @@ internal class PLLDefiner
 
     public static List<CubeMove>? GetPLL(Cube cube)
     {
+        var cornersRepositionData = CornerRepositionDefiner.DefineCornersReposition(cube);
+        var edgesRepositionData = EdgeRepositionDefiner.DefineEdgesReposition(cube);
+
         for (int i = 1; i <= _pllCount; i++)
         {
-            if (IsPLL(cube, (Models.PLL)i))
+            if (IsPLL(cornersRepositionData, edgesRepositionData, (Models.PLL)i))
             {
                 return PLLAlgorithms.GetPLL((Models.PLL)i);
             }
@@ -21,17 +24,23 @@ internal class PLLDefiner
         return null;
     }
 
-    private static bool IsPLL(Cube cube, Models.PLL pll)
+    private static bool IsPLL(CornersRepositionData cornersRepositionData, EdgesRepositionData edgesRepositionData, Models.PLL pll)
     {
-        var cornersRepositionData = CornerRepositionDefiner.DefineCornersReposition(cube);
-        var edgesRepositionData = EdgeRepositionDefiner.DefineEdgesReposition(cube);
-
         return pll switch
         {
             Models.PLL.Aa => AaCondition(cornersRepositionData, edgesRepositionData),
             Models.PLL.Ab => AbCondition(cornersRepositionData, edgesRepositionData),
+            Models.PLL.F => FCondition(cornersRepositionData, edgesRepositionData),
+            Models.PLL.Ga => GaCondition(cornersRepositionData, edgesRepositionData),
+            Models.PLL.Gb => GbCondition(cornersRepositionData, edgesRepositionData),
+            Models.PLL.Gc => GcCondition(cornersRepositionData, edgesRepositionData),
+            Models.PLL.Gd => GdCondition(cornersRepositionData, edgesRepositionData),
+            Models.PLL.Ja => JaCondition(cornersRepositionData, edgesRepositionData),
+            Models.PLL.Jb => JbCondition(cornersRepositionData, edgesRepositionData),
+            Models.PLL.Ra => RaCondition(cornersRepositionData, edgesRepositionData),
+            Models.PLL.Rb => RbCondition(cornersRepositionData, edgesRepositionData),
 
-            _ => throw new NotImplementedException()
+            _ => false
         };
     }
 
@@ -57,5 +66,112 @@ internal class PLLDefiner
              edgesData.Left == Reposition.None &&
              edgesData.Back == Reposition.None &&
              edgesData.Right == Reposition.None;
+    }
+
+    private static bool FCondition(CornersRepositionData cornersData, EdgesRepositionData edgesData)
+    {
+        return cornersData.FrontRight == Reposition.CounterClockwise &&
+             cornersData.FrontLeft == Reposition.None &&
+             cornersData.BackLeft == Reposition.None &&
+             cornersData.BackRight == Reposition.Clockwise &&
+             edgesData.Front == Reposition.Across &&
+             edgesData.Left == Reposition.None &&
+             edgesData.Back == Reposition.Across &&
+             edgesData.Right == Reposition.None;
+    }
+    
+    private static bool GaCondition(CornersRepositionData cornersData, EdgesRepositionData edgesData)
+    {
+        return cornersData.FrontRight == Reposition.CounterClockwise &&
+             cornersData.FrontLeft == Reposition.None &&
+             cornersData.BackLeft == Reposition.None &&
+             cornersData.BackRight == Reposition.Clockwise &&
+             edgesData.Front == Reposition.CounterClockwise &&
+             edgesData.Left == Reposition.Clockwise &&
+             edgesData.Back == Reposition.Across &&
+             edgesData.Right == Reposition.Across;
+    }
+    private static bool GbCondition(CornersRepositionData cornersData, EdgesRepositionData edgesData)
+    {
+        return cornersData.FrontRight == Reposition.CounterClockwise &&
+             cornersData.FrontLeft == Reposition.None &&
+             cornersData.BackLeft == Reposition.None &&
+             cornersData.BackRight == Reposition.Clockwise &&
+             edgesData.Front == Reposition.Across &&
+             edgesData.Left == Reposition.Across &&
+             edgesData.Back == Reposition.CounterClockwise &&
+             edgesData.Right == Reposition.Clockwise;
+    }
+
+    private static bool GcCondition(CornersRepositionData cornersData, EdgesRepositionData edgesData)
+    {
+        return cornersData.FrontRight == Reposition.CounterClockwise &&
+             cornersData.FrontLeft == Reposition.None &&
+             cornersData.BackLeft == Reposition.None &&
+             cornersData.BackRight == Reposition.Clockwise &&
+             edgesData.Front == Reposition.Across &&
+             edgesData.Left == Reposition.CounterClockwise &&
+             edgesData.Back == Reposition.Clockwise &&
+             edgesData.Right == Reposition.Across;
+    }
+
+    private static bool GdCondition(CornersRepositionData cornersData, EdgesRepositionData edgesData)
+    {
+        return cornersData.FrontRight == Reposition.CounterClockwise &&
+             cornersData.FrontLeft == Reposition.None &&
+             cornersData.BackLeft == Reposition.None &&
+             cornersData.BackRight == Reposition.Clockwise &&
+             edgesData.Front == Reposition.Clockwise &&
+             edgesData.Left == Reposition.Across &&
+             edgesData.Back == Reposition.Across &&
+             edgesData.Right == Reposition.CounterClockwise;
+    }
+
+    private static bool JaCondition(CornersRepositionData cornersData, EdgesRepositionData edgesData)
+    {
+        return cornersData.FrontRight == Reposition.CounterClockwise &&
+             cornersData.FrontLeft == Reposition.None &&
+             cornersData.BackLeft == Reposition.None &&
+             cornersData.BackRight == Reposition.Clockwise &&
+             edgesData.Front == Reposition.CounterClockwise &&
+             edgesData.Left == Reposition.None &&
+             edgesData.Back == Reposition.None &&
+             edgesData.Right == Reposition.Clockwise;
+    }
+
+    private static bool JbCondition(CornersRepositionData cornersData, EdgesRepositionData edgesData)
+    {
+        return cornersData.FrontRight == Reposition.None &&
+             cornersData.FrontLeft == Reposition.Clockwise &&
+             cornersData.BackLeft == Reposition.CounterClockwise &&
+             cornersData.BackRight == Reposition.None &&
+             edgesData.Front == Reposition.Clockwise&&
+             edgesData.Left == Reposition.CounterClockwise &&
+             edgesData.Back == Reposition.None &&
+             edgesData.Right == Reposition.None;
+    }
+
+    private static bool RaCondition(CornersRepositionData cornersData, EdgesRepositionData edgesData)
+    {
+        return cornersData.FrontRight == Reposition.None &&
+             cornersData.FrontLeft == Reposition.None &&
+             cornersData.BackLeft == Reposition.Clockwise &&
+             cornersData.BackRight == Reposition.CounterClockwise &&
+             edgesData.Front == Reposition.Clockwise &&
+             edgesData.Left == Reposition.CounterClockwise &&
+             edgesData.Back == Reposition.None &&
+             edgesData.Right == Reposition.None;
+    }
+
+    private static bool RbCondition(CornersRepositionData cornersData, EdgesRepositionData edgesData)
+    {
+        return cornersData.FrontRight == Reposition.None &&
+             cornersData.FrontLeft == Reposition.None &&
+             cornersData.BackLeft == Reposition.Clockwise &&
+             cornersData.BackRight == Reposition.CounterClockwise &&
+             edgesData.Front == Reposition.CounterClockwise &&
+             edgesData.Left == Reposition.None &&
+             edgesData.Back == Reposition.None &&
+             edgesData.Right == Reposition.Clockwise;
     }
 }
