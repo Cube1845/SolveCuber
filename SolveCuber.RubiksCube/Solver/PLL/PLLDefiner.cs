@@ -14,18 +14,20 @@ internal class PLLDefiner
 
         for (int i = 0; i < 4; i++)
         {
+            cubeCopy.ExecuteMove(CubeMove.d);
+
             var cornersRepositionData = CornerRepositionDefiner.DefineCornersReposition(cubeCopy);
             var edgesRepositionData = EdgeRepositionDefiner.DefineEdgesReposition(cubeCopy);
 
             for (int j = 1; j <= _pllCount; j++)
             {
-                if (IsPLL(cornersRepositionData, edgesRepositionData, (Models.PLL)i))
+                var isCurrentPLL = IsPLL(cornersRepositionData, edgesRepositionData, (Models.PLL)j);
+
+                if (isCurrentPLL)
                 {
                     return PLLAlgorithms.GetPLL((Models.PLL)i);
                 }
             }
-
-            cubeCopy.ExecuteMove(CubeMove.d);
         }
 
         return null;

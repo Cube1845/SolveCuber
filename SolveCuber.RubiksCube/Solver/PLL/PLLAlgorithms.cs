@@ -1,5 +1,4 @@
 ﻿using SolveCuber.CubeModel;
-using System.Reflection;
 
 namespace SolveCuber.Solver.PLL;
 
@@ -9,17 +8,22 @@ internal static class PLLAlgorithms
 {
     public static List<CubeMove> GetPLL(Models.PLL pll)
     {
-        string propertyName = pll.ToString();
-
-        var property = typeof(PLLAlgorithms)
-            .GetProperty(propertyName, BindingFlags.Public | BindingFlags.Static);
-
-        if (property != null && property.GetValue(null) is List<CubeMove> moves)
+        return pll switch
         {
-            return moves;
-        }
+            Models.PLL.Aa => Aa,
+            Models.PLL.Ab => Ab,
+            Models.PLL.F => F,
+            Models.PLL.Ga => Ga,
+            Models.PLL.Gb => Gb,
+            Models.PLL.Gc => Gc,
+            Models.PLL.Gd => Gd,
+            Models.PLL.Ja => Ja,
+            Models.PLL.Jb => Jb,
+            Models.PLL.Ra => Ra,
+            Models.PLL.Rb => Rb,
 
-        throw new NotImplementedException();
+            _ => throw new NotImplementedException()
+        };
     }
 
     public static List<CubeMove> Aa = [CubeMove.x, CubeMove.R_, CubeMove.U, CubeMove.R_, CubeMove.D2, CubeMove.R, CubeMove.U_, CubeMove.R_, CubeMove.D2, CubeMove.R2, CubeMove.x_];

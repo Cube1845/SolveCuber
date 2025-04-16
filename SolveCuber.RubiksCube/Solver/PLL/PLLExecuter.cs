@@ -36,25 +36,63 @@ public class PLLExecuter
             }
         }
 
-        if (setUpMoves.Count > 0)
+        if (setUpMoves.Count == 0)
         {
             return MoveOptimizer.OptimizeMoves([.. pll]);
         }
 
         setUpMoves = MoveOptimizer.OptimizeMoves(setUpMoves);
 
-        return MoveOptimizer.OptimizeMoves([.. setUpMoves, .. pll, GetOppositeMove(setUpMoves[0])!.Value]);
+        cubeCopy = cube.DeepCopy();
+        cubeCopy.ExecuteAlgorithm(setUpMoves);
+
+        if (IsCubeSolved(cubeCopy))
+        {
+            MoveOptimizer.OptimizeMoves([.. setUpMoves, .. pll]);
+        }
+
+        List<CubeMove> goingBackMoves = [];
+
+        for (int i = 0; i < 3; i++)
+        {
+            cubeCopy.ExecuteMove(CubeMove.U);
+            goingBackMoves.Add(CubeMove.U);
+
+            if (IsCubeSolved(cubeCopy))
+            {
+                continue;
+            }
+        }
+
+        return MoveOptimizer.OptimizeMoves([.. setUpMoves, .. pll, .. MoveOptimizer.OptimizeMoves(goingBackMoves)]);
     }
 
-    private static CubeMove? GetOppositeMove(CubeMove move)
+    private static bool IsCubeSolved(Cube cube)
     {
-        return move switch
-        {
-            CubeMove.U => CubeMove.U_,
-            CubeMove.U_ => CubeMove.U,
-            CubeMove.U2 => CubeMove.U2,
+        var frontColor = cube.Front.Face[1, 1];
+        var isFrontSolved =
+            cube.Front.Face[0, 0] == frontColor &&
+            cube.Front.Face[0, 1] == frontColor &&
+            cube.Front.Face[0, 2] == frontColor;
 
-            _ => null
-        };
+        var rightColor = cube.Front.Face[1, 1];
+        var isRightSolved =
+            cube.Right.Face[0, 0] == rightColor &&
+            cube.Right.Face[0, 1] == rightColor &&
+            cube.Right.Face[0, 2] == rightColor;
+
+        var backColor = cube.Front.Face[1, 1];
+        var isBackSolved =
+            cube.Back.Face[0, 0] == backColor &&
+            cube.Back.Face[0, 1] == backColor &&
+            cube.Back.Face[0, 2] == backColor;
+
+        var leftColor = cube.Front.Face[1, 1];
+        var isLeftSolved =
+            cube.Left.Face[0, 0] == leftColor &&
+            cube.Left.Face[0, 1] == leftColor &&
+            cube.Left.Face[0, 2] == leftColor;
+
+        return isFrontSolved && isRightSolved && isBackSolved && isLeftSolved;
     }
 }
