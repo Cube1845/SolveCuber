@@ -25,7 +25,7 @@ internal class PLLDefiner
 
                 if (isCurrentPLL)
                 {
-                    return PLLAlgorithms.GetPLL((Models.PLL)i);
+                    return PLLAlgorithms.GetPLL((Models.PLL)j);
                 }
             }
         }

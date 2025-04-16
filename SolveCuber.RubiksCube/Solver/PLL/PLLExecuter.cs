@@ -20,7 +20,7 @@ public class PLLExecuter
         Cube cubeCopy = cube.DeepCopy();
 
         List<CubeMove> setUpMoves = [];
-        List<CubeMove>? pll = PLLDefiner.GetPLL(cube);
+        List<CubeMove>? pll = PLLDefiner.GetPLL(cubeCopy);
 
         while (pll == null || pll.Count == 0)
         {
@@ -46,14 +46,9 @@ public class PLLExecuter
         cubeCopy = cube.DeepCopy();
         cubeCopy.ExecuteAlgorithm(setUpMoves);
 
-        if (IsCubeSolved(cubeCopy))
-        {
-            MoveOptimizer.OptimizeMoves([.. setUpMoves, .. pll]);
-        }
-
         List<CubeMove> goingBackMoves = [];
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
         {
             cubeCopy.ExecuteMove(CubeMove.U);
             goingBackMoves.Add(CubeMove.U);
