@@ -70,19 +70,19 @@ public class PLLExecuter
             cube.Front.Face[0, 1] == frontColor &&
             cube.Front.Face[0, 2] == frontColor;
 
-        var rightColor = cube.Front.Face[1, 1];
+        var rightColor = cube.Right.Face[1, 1];
         var isRightSolved =
             cube.Right.Face[0, 0] == rightColor &&
             cube.Right.Face[0, 1] == rightColor &&
             cube.Right.Face[0, 2] == rightColor;
 
-        var backColor = cube.Front.Face[1, 1];
+        var backColor = cube.Back.Face[1, 1];
         var isBackSolved =
             cube.Back.Face[0, 0] == backColor &&
             cube.Back.Face[0, 1] == backColor &&
             cube.Back.Face[0, 2] == backColor;
 
-        var leftColor = cube.Front.Face[1, 1];
+        var leftColor = cube.Left.Face[1, 1];
         var isLeftSolved =
             cube.Left.Face[0, 0] == leftColor &&
             cube.Left.Face[0, 1] == leftColor &&

@@ -21,6 +21,16 @@ internal static class PLLAlgorithms
             Models.PLL.Jb => Jb,
             Models.PLL.Ra => Ra,
             Models.PLL.Rb => Rb,
+            Models.PLL.T => T,
+            Models.PLL.E => E,
+            Models.PLL.Na => Na,
+            Models.PLL.Nb => Nb,
+            Models.PLL.V => V,
+            Models.PLL.Y => Y,
+            Models.PLL.H => H,
+            Models.PLL.Ua => Ua,
+            Models.PLL.Ub => Ub,
+            Models.PLL.Z => Z,
 
             _ => throw new NotImplementedException()
         };
