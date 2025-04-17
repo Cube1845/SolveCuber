@@ -36,15 +36,7 @@ public class PLLExecuter
             }
         }
 
-        if (setUpMoves.Count == 0)
-        {
-            return MoveOptimizer.OptimizeMoves([.. pll]);
-        }
-
-        setUpMoves = MoveOptimizer.OptimizeMoves(setUpMoves);
-
-        cubeCopy = cube.DeepCopy();
-        cubeCopy.ExecuteAlgorithm(setUpMoves);
+        cubeCopy.ExecuteAlgorithm(pll);
 
         List<CubeMove> goingBackMoves = [];
 
@@ -55,11 +47,11 @@ public class PLLExecuter
 
             if (IsCubeSolved(cubeCopy))
             {
-                continue;
+                break;
             }
         }
 
-        return MoveOptimizer.OptimizeMoves([.. setUpMoves, .. pll, .. MoveOptimizer.OptimizeMoves(goingBackMoves)]);
+        return MoveOptimizer.OptimizeMoves([.. setUpMoves, .. pll, .. goingBackMoves]);
     }
 
     private static bool IsCubeSolved(Cube cube)

@@ -6,7 +6,7 @@ namespace SolveCuber.Solver.PLL;
 
 internal class PLLDefiner
 {
-    private readonly static int _pllCount = 11; //21
+    private readonly static int _pllCount = 21;
 
     public static List<CubeMove>? GetPLL(Cube cube)
     {
@@ -21,9 +21,12 @@ internal class PLLDefiner
 
             for (int j = 1; j <= _pllCount; j++)
             {
-                var isCurrentPLL = IsPLL(cornersRepositionData, edgesRepositionData, (Models.PLL)j);
+                if (NoPLLCondition(cornersRepositionData, edgesRepositionData))
+                {
+                    return [];
+                }
 
-                if (isCurrentPLL)
+                if (IsPLL(cornersRepositionData, edgesRepositionData, (Models.PLL)j))
                 {
                     return PLLAlgorithms.GetPLL((Models.PLL)j);
                 }
@@ -61,6 +64,18 @@ internal class PLLDefiner
 
             _ => false
         };
+    }
+
+    private static bool NoPLLCondition(CornersRepositionData cornersData, EdgesRepositionData edgesData)
+    {
+        return cornersData.FrontRight == Reposition.None &&
+             cornersData.FrontLeft == Reposition.None &&
+             cornersData.BackLeft == Reposition.None &&
+             cornersData.BackRight == Reposition.None &&
+             edgesData.Front == Reposition.None &&
+             edgesData.Left == Reposition.None &&
+             edgesData.Back == Reposition.None &&
+             edgesData.Right == Reposition.None;
     }
 
     private static bool AaCondition(CornersRepositionData cornersData, EdgesRepositionData edgesData)

@@ -50,7 +50,7 @@ internal static class PLLAlgorithms
     public static List<CubeMove> Jb = [CubeMove.L_, CubeMove.U_, CubeMove.L, CubeMove.F, CubeMove.L_, CubeMove.U_, CubeMove.L, CubeMove.U, CubeMove.L, CubeMove.F_, CubeMove.L2, CubeMove.U, CubeMove.L, CubeMove.U];
 
     public static List<CubeMove> Ra = [CubeMove.L, CubeMove.U2, CubeMove.L_, CubeMove.U2, CubeMove.L, CubeMove.F_, CubeMove.L_, CubeMove.U_, CubeMove.L, CubeMove.U, CubeMove.L, CubeMove.F, CubeMove.L2, CubeMove.U];
-    public static List<CubeMove> Rb = [CubeMove.R_, CubeMove.U2, CubeMove.R, CubeMove.U2, CubeMove.R_, CubeMove.F, CubeMove.R, CubeMove.U, CubeMove.R_, CubeMove.U_, CubeMove.R_, CubeMove.F_, CubeMove.L2, CubeMove.U_];
+    public static List<CubeMove> Rb = [CubeMove.R_, CubeMove.U2, CubeMove.R, CubeMove.U2, CubeMove.R_, CubeMove.F, CubeMove.R, CubeMove.U, CubeMove.R_, CubeMove.U_, CubeMove.R_, CubeMove.F_, CubeMove.R2, CubeMove.U_];
 
     public static List<CubeMove> T = [CubeMove.R, CubeMove.U, CubeMove.R_, CubeMove.U_, CubeMove.R_, CubeMove.F, CubeMove.R2, CubeMove.U_, CubeMove.R_, CubeMove.U_, CubeMove.R, CubeMove.U, CubeMove.R_, CubeMove.F_];
 
