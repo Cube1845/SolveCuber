@@ -240,8 +240,8 @@ internal class PLLDefiner
              cornersData.BackLeft == Reposition.None &&
              cornersData.BackRight == Reposition.Across &&
              edgesData.Front == Reposition.None &&
-             edgesData.Left == Reposition.None &&
-             edgesData.Back == Reposition.Across &&
+             edgesData.Left == Reposition.Across &&
+             edgesData.Back == Reposition.None &&
              edgesData.Right == Reposition.Across;
     }
 

@@ -27,7 +27,7 @@ public static class OLLExecuter
         List<CubeMove> setUpMoves = [];
         List<CubeMove>? ollAlgorithm = CheckOLLCases(clonedOrientations);
 
-        while (ollAlgorithm == null || ollAlgorithm.Count == 0)
+        while (ollAlgorithm == null)
         {
             cubeCopy.ExecuteMove(CubeMove.U);
 

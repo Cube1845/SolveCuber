@@ -22,7 +22,7 @@ public class PLLExecuter
         List<CubeMove> setUpMoves = [];
         List<CubeMove>? pll = PLLDefiner.GetPLL(cubeCopy);
 
-        while (pll == null || pll.Count == 0)
+        while (pll == null)
         {
             cubeCopy.ExecuteMove(CubeMove.U);
 

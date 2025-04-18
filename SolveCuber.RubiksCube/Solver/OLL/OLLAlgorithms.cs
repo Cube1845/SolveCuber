@@ -178,7 +178,7 @@ internal static class OLLAlgorithms
             new FaceAxis[3, 3]
             {
                 { FaceAxis.X, FaceAxis.Z, FaceAxis.Y },
-                { FaceAxis.Y, FaceAxis.Y, FaceAxis.X },
+                { FaceAxis.Y, FaceAxis.Y, FaceAxis.Y },
                 { FaceAxis.Z, FaceAxis.Z, FaceAxis.X }
             },
             [CubeMove.r, CubeMove.U, CubeMove.r_, CubeMove.R, CubeMove.U, CubeMove.R_, CubeMove.U_, CubeMove.r, CubeMove.U_, CubeMove.r_]
