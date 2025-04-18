@@ -1,11 +1,43 @@
 ﻿using SolveCuber.CubeModel;
 using SolveCuber.CubeModel.Models;
+using SolveCuber.Solver.Solver;
 
 namespace SolveCuber.Playground;
 
 public static class CubeDisplayer
 {
     private static readonly string _empty = "  ";
+
+    public static void DisplaySolve(Solve solve)
+    {
+        Console.WriteLine("Solve: \n");
+
+        Console.WriteLine("- Cross:");
+        DisplayMoves(solve.Cross);
+
+        Console.WriteLine("- Rotation: z2\n");
+
+        Console.WriteLine("- F2L:");
+        DisplayMoves(solve.F2L);
+
+        Console.WriteLine("- OLL:");
+        DisplayMoves(solve.OLL);
+
+        Console.WriteLine("- PLL:");
+        DisplayMoves(solve.PLL);
+
+        Console.WriteLine("- Moves: " + solve.MovesCount);
+    }
+
+    private static void DisplayMoves(List<CubeMove> moves)
+    {
+        foreach (var move in moves)
+        {
+            Console.Write(move.ToString() + ", ");
+        }
+
+        Console.Write("\n\n");
+    }
 
     public static void DisplayCube(Cube cube)
     {
