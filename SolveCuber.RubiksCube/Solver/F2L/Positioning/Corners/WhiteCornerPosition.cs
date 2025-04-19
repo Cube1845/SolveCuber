@@ -1,4 +1,6 @@
-﻿namespace SolveCuber.Solver.F2L.Positioning.Corners;
+﻿using SolveCuber.Solver.Common;
+
+namespace SolveCuber.Solver.F2L.Positioning.Corners;
 
 // Default cube position while solving F2L is yellow on top, facing green.
 internal struct WhiteCornerPosition
