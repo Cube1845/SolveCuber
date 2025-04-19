@@ -11,8 +11,10 @@ internal static class MoveOptimizer
             return moves;
         }
 
+        moves = OptimizeRotationPairs(moves);
+
         List<CubeMove> optimizedMoves = [];
-        Stack<CubeMove> moveStack = new();
+        Stack<CubeMove> moveStack = [];
 
         foreach (var move in moves)
         {
@@ -48,6 +50,55 @@ internal static class MoveOptimizer
         return optimizedMoves;
     }
 
+    private static List<CubeMove> OptimizeRotationPairs(List<CubeMove> moves)
+    {
+        var optimized = new List<CubeMove>();
+        int i = 0;
+
+        while (i < moves.Count)
+        {
+            if (IsRotation(moves[i]) && i + 2 < moves.Count)
+            {
+                var rotation1 = moves[i];
+                var middleMove = moves[i + 1];
+                var rotation2 = moves[i + 2];
+
+                if (GetMoveType(rotation1) == GetMoveType(rotation2) &&
+                    !DoesMoveInterfereWithRotation(middleMove, rotation1))
+                {
+                    var combinedRotation = CombineMoves(rotation1, rotation2);
+                    if (combinedRotation != null)
+                    {
+                        optimized.Add(combinedRotation.Value);
+                        optimized.Add(middleMove);
+                        i += 3;
+                        continue;
+                    }
+                }
+            }
+            optimized.Add(moves[i]);
+            i++;
+        }
+
+        return optimized;
+    }
+
+    private static bool DoesMoveInterfereWithRotation(CubeMove move, CubeMove rotation)
+    {
+        string moveFace = GetMoveType(move);
+        string rotationAxis = GetMoveType(rotation);
+
+        return (rotationAxis == "y" && (moveFace == "U" || moveFace == "D")) ||
+               (rotationAxis == "x" && (moveFace == "R" || moveFace == "L")) ||
+               (rotationAxis == "z" && (moveFace == "F" || moveFace == "B"));
+    }
+
+    private static bool IsRotation(CubeMove move)
+    {
+        string moveStr = move.ToString();
+        return moveStr.StartsWith("x") || moveStr.StartsWith("y") || moveStr.StartsWith("z");
+    }
+
     private static bool AreOppositeMoves(CubeMove move1, CubeMove move2)
     {
         return (move1 == CubeMove.U && move2 == CubeMove.U_) ||
@@ -74,7 +125,9 @@ internal static class MoveOptimizer
         var moveType = GetMoveType(move1);
 
         if (moveType == null)
+        {
             return null;
+        }
 
         var move1Suffix = GetMoveSuffix(move1);
         var move2Suffix = GetMoveSuffix(move2);
@@ -113,10 +166,16 @@ internal static class MoveOptimizer
     {
         var moveName = move.ToString();
         if (moveName.EndsWith("2"))
+        {
             return "2";
+        }
         else if (moveName.EndsWith("_"))
+        {
             return "_";
+        }
         else
+        {
             return "";
+        }
     }
 }
