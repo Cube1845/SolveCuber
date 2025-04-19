@@ -7,6 +7,8 @@ using SolveCuber.Solver.Solver;
 Cube cube = new();
 
 var scramble = Scrambler.ScrambleCube(cube);
+//List<CubeMove> scramble = [];
+//cube.ExecuteAlgorithm(scramble);
 
 DisplayMoves(scramble);
 CubeDisplayer.DisplayCube(cube);
