@@ -10,4 +10,6 @@ public class Solve
     public List<CubeMove> OLL { get; init; } = [];
     public List<CubeMove> PLL { get; init; } = [];
     public int MovesCount { get; init; }
+
+    public string Order => $"{nameof(Cross)}, {nameof(AfterCrossRotation)}, {nameof(F2L)}, {nameof(OLL)}, {nameof(PLL)}";
 }

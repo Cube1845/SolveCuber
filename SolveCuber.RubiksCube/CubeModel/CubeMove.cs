@@ -1,7 +1,8 @@
-﻿namespace SolveCuber.CubeModel;  
+﻿namespace SolveCuber.CubeModel;
 
-// _ means prime (')
-
+/// <summary>
+/// _ means prime (')
+/// </summary>
 public enum CubeMove
 {
     U = 1, U_ = 2, U2 = 3,
