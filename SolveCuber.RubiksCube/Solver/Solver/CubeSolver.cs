@@ -9,7 +9,7 @@ namespace SolveCuber.Solver.Solver;
 
 public static class CubeSolver
 {
-    public static void SolveCube(Cube cube, out Solve solve)
+    public static Solve SolveCube(Cube cube)
     {
         var crossMoves = WhiteCrossSolver.SolveCross(cube);
 
@@ -21,7 +21,7 @@ public static class CubeSolver
 
         var pll = PLLExecuter.ExecutePLL(cube);
 
-        solve = new()
+        return new()
         {
             Cross = crossMoves,
             F2L = f2lMoves,

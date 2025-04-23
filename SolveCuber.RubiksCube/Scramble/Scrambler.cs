@@ -8,11 +8,13 @@ public static class Scrambler
 
     private static readonly int _scrambleLength = 25;
 
-    public static void ScrambleCube(Cube cube, out List<CubeMove> scramble)
+    public static List<CubeMove> ScrambleCube(Cube cube)
     {
-        scramble = GenerateScramble(_scrambleLength);
+        var scramble = GenerateScramble(_scrambleLength);
 
         cube.ExecuteAlgorithm(scramble);
+
+        return scramble;
     }
 
     public static List<CubeMove> GenerateScramble(int length)

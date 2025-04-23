@@ -6,16 +6,14 @@ using SolveCuber.Solver.Solver;
 
 Cube cube = new();
 
-CubeDisplayer.DisplayCube(cube);
-
-Scrambler.ScrambleCube(cube, out var scramble);
+var scramble = Scrambler.ScrambleCube(cube);
 //List<CubeMove> scramble = [];
 //cube.ExecuteAlgorithm(scramble);
 
 DisplayMoves(scramble);
 CubeDisplayer.DisplayCube(cube);
 
-CubeSolver.SolveCube(cube, out var solve);
+var solve = CubeSolver.SolveCube(cube);
 CubeDisplayer.DisplaySolve(solve);
 
 void DisplayMoves(List<CubeMove> moves)
