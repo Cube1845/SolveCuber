@@ -8,66 +8,60 @@ internal static class CubeOrienter
 {
     public static List<CubeMove> OrientCube(Cube cube, CubeColor targetFrontColor, CubeColor targetUpColor)
     {
+        if (AreColorsIncorrect(targetFrontColor, targetUpColor))
+        {
+            throw new Exception("Colors are incorrect");
+        }
+
         List<CubeMove> executedRotations = [];
         
         var cubeCopy = cube.DeepCopy();
 
-        if (cubeCopy.Front.Face[1, 1] == targetUpColor)
-        {
-            return [CubeMove.y2, CubeMove.x_];
-        }
+        var xRotationMoves = RotateUntil(cubeCopy, CubeMove.x, () => cubeCopy.Front.Face[1, 1] == targetFrontColor);
+        var yRotationMoves = RotateUntil(cubeCopy, CubeMove.y, () => cubeCopy.Front.Face[1, 1] == targetFrontColor);
+        var zRotationMoves = RotateUntil(cubeCopy, CubeMove.z, () => cubeCopy.Up.Face[1, 1] == targetUpColor);
 
-        if (cubeCopy.Front.Face[1, 1] == targetFrontColor)
+        var optimizedRotations = MoveOptimizer.OptimizeMoves
+        ([
+            .. xRotationMoves ?? [],
+            .. yRotationMoves ?? [],
+            .. zRotationMoves ?? [],
+        ]);
+
+        cube.ExecuteAlgorithm(optimizedRotations);
+
+        return optimizedRotations;
+    }
+
+    private static bool AreColorsIncorrect(CubeColor targetFrontColor, CubeColor targetUpColor)
+    {
+        List<CubeColor> HotOppositeColors = [CubeColor.Red, CubeColor.Orange];
+        List<CubeColor> ColdOppositeColors = [CubeColor.Blue, CubeColor.Green];
+        List<CubeColor> NeutralOppositeColors = [CubeColor.White, CubeColor.Yellow];
+
+        return (HotOppositeColors.Contains(targetFrontColor) && HotOppositeColors.Contains(targetUpColor)) ||
+            (ColdOppositeColors.Contains(targetFrontColor) && ColdOppositeColors.Contains(targetUpColor)) ||
+            (NeutralOppositeColors.Contains(targetFrontColor) && NeutralOppositeColors.Contains(targetUpColor));
+    }
+
+    private static List<CubeMove>? RotateUntil(Cube cube, CubeMove rotation, Func<bool> compare)
+    {
+        int i = 0;
+        List<CubeMove> executedRotations = [];
+
+        while (!compare())
         {
-            while (cubeCopy.Up.Face[1, 1] != targetUpColor)
+            cube.ExecuteMove(rotation);
+            executedRotations.Add(rotation);
+
+            i++;
+
+            if (i > 3)
             {
-                cubeCopy.ExecuteMove(CubeMove.z);
-                executedRotations.Add(CubeMove.z);
-
-                if (executedRotations.Count > 10)
-                {
-                    throw new Exception();
-                }
+                return null;
             }
-
-            return MoveOptimizer.OptimizeMoves(executedRotations);
         }
 
-        if (cubeCopy.Up.Face[1, 1] == targetUpColor)
-        {
-            while (cubeCopy.Front.Face[1, 1] != targetFrontColor)
-            {
-                cubeCopy.ExecuteMove(CubeMove.y);
-                executedRotations.Add(CubeMove.y);
-
-                if (executedRotations.Count > 10)
-                {
-                    throw new Exception();
-                }
-            }
-
-            return MoveOptimizer.OptimizeMoves(executedRotations);
-        }
-
-        if (cubeCopy.Up.Face[1, 1] == targetFrontColor)
-        {
-            cubeCopy.ExecuteMove(CubeMove.x_);
-            executedRotations.Add(CubeMove.x_);
-
-            while (cubeCopy.Front.Face[1, 1] != targetFrontColor)
-            {
-                cubeCopy.ExecuteMove(CubeMove.z);
-                executedRotations.Add(CubeMove.z);
-
-                if (executedRotations.Count > 10)
-                {
-                    throw new Exception();
-                }
-            }
-
-            return MoveOptimizer.OptimizeMoves(executedRotations);
-        }
-
-        return [];
+        return MoveOptimizer.OptimizeMoves(executedRotations);
     }
 }

@@ -1,6 +1,7 @@
 using SolveCuber.Common;
 using SolveCuber.CubeModel;
 using SolveCuber.CubeModel.Models;
+using SolveCuber.Solver.Common;
 
 namespace SolveCuber.Solver.WhiteCross;
 
@@ -40,35 +41,48 @@ public static class WhiteCrossSolver
         [CubeColor.Blue, CubeColor.Green, CubeColor.Red, CubeColor.Orange],
     ];
 
+    /// <summary>
+    /// Solves White Cross on the cube.
+    /// </summary>
+    /// <param name="cube">Cube you want to solve the white cross on</param>
+    /// <returns> Sequence of moves that solves the cross.</returns>
     public static List<CubeMove> SolveCross(Cube cube)
     {
-        if (IsCrossSolved(cube))
+        var cubeCopy = cube.DeepCopy();
+
+        var cubeRotations = CubeOrienter.OrientCube(cubeCopy, CubeColor.Green, CubeColor.White);
+
+        if (IsCrossSolved(cubeCopy))
         {
             return [];
         }
 
         CubeMove? firstUMove = null;
 
-        if (IsAnyWhiteEdgeOnUpFace(cube))
+        if (IsAnyWhiteEdgeOnUpFace(cubeCopy))
         {
-            var topFaceWhiteEdgePositioningMove = GetMoveThatPositionsTheMostEdgesCorrect(cube);
+            var topFaceWhiteEdgePositioningMove = GetMoveThatPositionsTheMostEdgesCorrect(cubeCopy);
 
             if (topFaceWhiteEdgePositioningMove != null)
             {
-                cube.ExecuteMove(topFaceWhiteEdgePositioningMove!.Value);
+                cubeCopy.ExecuteMove(topFaceWhiteEdgePositioningMove!.Value);
                 firstUMove = topFaceWhiteEdgePositioningMove!.Value;
             }
         }
 
-        var moves = GetSolutionWithLeastMoves(cube);
+        var moves = GetSolutionWithLeastMoves(cubeCopy);
 
-        cube.ExecuteAlgorithm(moves);
+        cubeCopy.ExecuteAlgorithm(moves);
 
         List<CubeMove> fullMoves = firstUMove is not null
             ? [firstUMove.Value, .. moves]
             : [.. moves];
 
-        return MoveOptimizer.OptimizeMoves(fullMoves);
+        List<CubeMove> output = MoveOptimizer.OptimizeMoves([.. cubeRotations, .. fullMoves]);
+
+        cube.ExecuteAlgorithm(output);
+
+        return output;
     }
 
     private static CubeMove? GetMoveThatPositionsTheMostEdgesCorrect(Cube cube)
