@@ -4,6 +4,7 @@ using SolveCuber.CubeModel.Models;
 using SolveCuber.Solver.Common;
 using SolveCuber.Solver.F2L.Positioning.Corners;
 using SolveCuber.Solver.F2L.Positioning.Edges;
+using SolveCuber.Solver.WhiteCross;
 
 namespace SolveCuber.Solver.F2L;
 
@@ -42,8 +43,20 @@ public static class F2LSolver
         [CubeColor.Blue, CubeColor.Green, CubeColor.Red, CubeColor.Orange],
     ];
 
+    /// <summary>
+    /// Solves first two leayers of the cube if the white cross is solved.
+    /// </summary>
+    /// <param name="cube">Cube you want to solve the white cross on</param>
+    /// <returns>Sequence of moves that solves the first two layers.</returns>
     public static List<CubeMove> SolveF2L(Cube cube)
     {
+        if (!WhiteCrossSolver.IsCrossSolved(cube))
+        {
+            throw new RubiksCubeException("You can't solve the first two layers if white cross is not solved.");
+        }
+
+        var cubeRotations = CubeOrienter.OrientCube(cube, CubeColor.Yellow);
+
         if (IsF2lSolved(cube))
         {
             return [];
@@ -53,7 +66,7 @@ public static class F2LSolver
 
         cube.ExecuteAlgorithm(solutionWithLeastMoves);
 
-        return solutionWithLeastMoves;
+        return MoveOptimizer.OptimizeMoves([.. cubeRotations, .. solutionWithLeastMoves]);
     }
 
     private static List<CubeMove> GetSolutionWithLeastMoves(Cube cube)

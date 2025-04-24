@@ -15,8 +15,6 @@ public static class CubeDisplayer
         Console.WriteLine("- Cross:");
         DisplayMoves(solve.Cross);
 
-        Console.WriteLine("- Rotation: z2\n");
-
         Console.WriteLine("- F2L:");
         DisplayMoves(solve.F2L);
 

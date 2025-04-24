@@ -1,5 +1,4 @@
-﻿using SolveCuber.CubeModel;
-using SolveCuber.CubeModel.Models;
+﻿using SolveCuber.CubeModel.Models;
 using SolveCuber.Solver.F2L;
 using SolveCuber.Solver.OLL;
 using SolveCuber.Solver.PLL;
@@ -12,8 +11,6 @@ public static class CubeSolver
     public static Solve SolveCube(Cube cube)
     {
         var crossMoves = WhiteCrossSolver.SolveCross(cube);
-
-        cube.ExecuteMove(CubeMove.z2);
 
         var f2lMoves = F2LSolver.SolveF2L(cube);
 

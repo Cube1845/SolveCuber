@@ -45,7 +45,7 @@ public static class WhiteCrossSolver
     /// Solves White Cross on the cube.
     /// </summary>
     /// <param name="cube">Cube you want to solve the white cross on</param>
-    /// <returns> Sequence of moves that solves the cross.</returns>
+    /// <returns>Sequence of moves that solves the cross.</returns>
     public static List<CubeMove> SolveCross(Cube cube)
     {
         var cubeCopy = cube.DeepCopy();
@@ -85,6 +85,21 @@ public static class WhiteCrossSolver
         return output;
     }
 
+    internal static bool IsCrossSolved(Cube cube)
+    {
+        WhiteEdgesData edgesData = GetWhiteEdgeLocations(cube);
+
+        foreach (var color in _secondWhiteEdgeColors)
+        {
+            if (!WhiteEdgePositioningHelper.IsInCorrectPlace(color, edgesData.GetLocation(color)))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private static CubeMove? GetMoveThatPositionsTheMostEdgesCorrect(Cube cube)
     {
         List<int> correctlyPlacedEdgesForSolutions = [];
@@ -108,7 +123,7 @@ public static class WhiteCrossSolver
             2 => CubeMove.U2,
             3 => CubeMove.U_,
 
-            _ => throw new Exception()
+            _ => throw new NotImplementedException()
         };
     }
 
@@ -180,27 +195,7 @@ public static class WhiteCrossSolver
             moves.AddRange(currentMoves);
         }
 
-        if (!IsCrossSolved(cubeCopy))
-        {
-            throw new Exception();
-        }
-
         return MoveOptimizer.OptimizeMoves(moves);
-    }
-
-    private static bool IsCrossSolved(Cube cube)
-    {
-        WhiteEdgesData edgesData = GetWhiteEdgeLocations(cube);
-
-        foreach (var color in _secondWhiteEdgeColors)
-        {
-            if (!WhiteEdgePositioningHelper.IsInCorrectPlace(color, edgesData.GetLocation(color)))
-            {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     private static WhiteEdgesData GetWhiteEdgeLocations(Cube cube)

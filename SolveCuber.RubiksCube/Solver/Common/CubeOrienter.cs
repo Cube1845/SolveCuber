@@ -6,6 +6,26 @@ namespace SolveCuber.Solver.Common;
 
 internal static class CubeOrienter
 {
+    public static List<CubeMove> OrientCube(Cube cube, CubeColor targetUpColor)
+    {
+        List<CubeMove> executedRotations = [];
+
+        var cubeCopy = cube.DeepCopy();
+
+        var zRotationMoves = RotateUntil(cubeCopy, CubeMove.z, () => cubeCopy.Up.Face[1, 1] == targetUpColor);
+        var xRotationMoves = RotateUntil(cubeCopy, CubeMove.x, () => cubeCopy.Up.Face[1, 1] == targetUpColor);
+
+        var optimizedRotations = MoveOptimizer.OptimizeMoves
+        ([
+            .. zRotationMoves ?? [],
+            .. xRotationMoves ?? [],
+        ]);
+
+        cube.ExecuteAlgorithm(optimizedRotations);
+
+        return optimizedRotations;
+    }
+
     public static List<CubeMove> OrientCube(Cube cube, CubeColor targetFrontColor, CubeColor targetUpColor)
     {
         if (AreColorsIncorrect(targetFrontColor, targetUpColor))
