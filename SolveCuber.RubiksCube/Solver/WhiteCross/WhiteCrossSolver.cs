@@ -87,7 +87,11 @@ public static class WhiteCrossSolver
 
     internal static bool IsCrossSolved(Cube cube)
     {
-        WhiteEdgesData edgesData = GetWhiteEdgeLocations(cube);
+        var cubeCopy = cube.DeepCopy();
+
+        CubeOrienter.OrientCube(cubeCopy, CubeColor.Green, CubeColor.White);
+
+        WhiteEdgesData edgesData = GetWhiteEdgeLocations(cubeCopy);
 
         foreach (var color in _secondWhiteEdgeColors)
         {

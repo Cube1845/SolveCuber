@@ -8,6 +8,11 @@ namespace SolveCuber.Solver.Solver;
 
 public static class CubeSolver
 {
+    /// <summary>
+    /// Solves the cube.
+    /// </summary>
+    /// <param name="cube">Cube you want to solve.</param>
+    /// <returns>Solve object that contains sequences of moves that solves the cube.</returns>
     public static Solve SolveCube(Cube cube)
     {
         var crossMoves = WhiteCrossSolver.SolveCross(cube);

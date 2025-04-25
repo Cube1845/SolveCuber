@@ -1,18 +1,46 @@
 ﻿using SolveCuber.Common;
 using SolveCuber.CubeModel;
 using SolveCuber.CubeModel.Models;
+using SolveCuber.Solver.Common;
+using SolveCuber.Solver.F2L;
 
 namespace SolveCuber.Solver.PLL;
 
 public class PLLExecuter
 {
+    /// <summary>
+    /// Executes PLL that solves the cube if first two layers are solved, and top layer pieces are oriented yellow stickers up.
+    /// </summary>
+    /// <param name="cube">Cube you want to execute the PLL on</param>
+    /// <returns>Sequence of moves that solves the cube.</returns>
+    /// <exception cref="RubiksCubeException"></exception>
     public static List<CubeMove> ExecutePLL(Cube cube)
     {
+        var cubeRotations = CubeOrienter.OrientCube(cube, CubeColor.Yellow);
+
+        if (!F2LSolver.IsF2lSolved(cube) || !IsTopLayerOriented(cube))
+        {
+            throw new RubiksCubeException("You execute the PLL if top layer of the cube is not oriented and first two layers are not solved.");
+        }
+
         var pll = GetPLL(cube);
 
         cube.ExecuteAlgorithm(pll);
 
-        return pll;
+        return MoveOptimizer.OptimizeMoves([.. cubeRotations, .. pll]);
+    }
+
+    private static bool IsTopLayerOriented(Cube cube)
+    {
+        return cube.Up.Face[0, 0] == CubeColor.Yellow &&
+            cube.Up.Face[0, 1] == CubeColor.Yellow &&
+            cube.Up.Face[0, 2] == CubeColor.Yellow &&
+            cube.Up.Face[1, 0] == CubeColor.Yellow &&
+            cube.Up.Face[1, 1] == CubeColor.Yellow &&
+            cube.Up.Face[1, 2] == CubeColor.Yellow &&
+            cube.Up.Face[2, 0] == CubeColor.Yellow &&
+            cube.Up.Face[2, 1] == CubeColor.Yellow &&
+            cube.Up.Face[2, 2] == CubeColor.Yellow;
     }
 
     private static List<CubeMove> GetPLL(Cube cube)
@@ -32,7 +60,7 @@ public class PLLExecuter
 
             if (setUpMoves.Count >= 4)
             {
-                throw new Exception("PLL case not found");
+                throw new RubiksCubeException("PLL case not found");
             }
         }
 

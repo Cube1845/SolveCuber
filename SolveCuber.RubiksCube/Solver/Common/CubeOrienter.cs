@@ -30,7 +30,7 @@ internal static class CubeOrienter
     {
         if (AreColorsIncorrect(targetFrontColor, targetUpColor))
         {
-            throw new Exception("Colors are incorrect");
+            throw new RubiksCubeException("Colors are incorrect");
         }
 
         List<CubeMove> executedRotations = [];
