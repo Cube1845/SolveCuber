@@ -10,37 +10,6 @@ public static class WhiteCrossSolver
     private readonly static List<CubeColor> _secondWhiteEdgeColors =
         [CubeColor.Green, CubeColor.Orange, CubeColor.Red, CubeColor.Blue];
 
-    private readonly static List<List<CubeColor>> _edgeSolvingOrders = 
-    [
-        [CubeColor.Green, CubeColor.Orange, CubeColor.Red, CubeColor.Blue],
-        [CubeColor.Green, CubeColor.Orange, CubeColor.Blue, CubeColor.Red],
-        [CubeColor.Green, CubeColor.Red, CubeColor.Blue, CubeColor.Orange],
-        [CubeColor.Green, CubeColor.Red, CubeColor.Orange, CubeColor.Blue],
-        [CubeColor.Green, CubeColor.Blue, CubeColor.Orange, CubeColor.Red],
-        [CubeColor.Green, CubeColor.Blue, CubeColor.Red, CubeColor.Orange],
-
-        [CubeColor.Orange, CubeColor.Green, CubeColor.Red, CubeColor.Blue],
-        [CubeColor.Orange, CubeColor.Green, CubeColor.Blue, CubeColor.Red],
-        [CubeColor.Orange, CubeColor.Red, CubeColor.Blue, CubeColor.Green],
-        [CubeColor.Orange, CubeColor.Red, CubeColor.Green, CubeColor.Blue],
-        [CubeColor.Orange, CubeColor.Blue, CubeColor.Green, CubeColor.Red],
-        [CubeColor.Orange, CubeColor.Blue, CubeColor.Red, CubeColor.Green],
-
-        [CubeColor.Red, CubeColor.Orange, CubeColor.Green, CubeColor.Blue],
-        [CubeColor.Red, CubeColor.Orange, CubeColor.Blue, CubeColor.Green],
-        [CubeColor.Red, CubeColor.Green, CubeColor.Blue, CubeColor.Orange],
-        [CubeColor.Red, CubeColor.Green, CubeColor.Orange, CubeColor.Blue],
-        [CubeColor.Red, CubeColor.Blue, CubeColor.Orange, CubeColor.Green],
-        [CubeColor.Red, CubeColor.Blue, CubeColor.Green, CubeColor.Orange],
-
-        [CubeColor.Blue, CubeColor.Orange, CubeColor.Red, CubeColor.Green],
-        [CubeColor.Blue, CubeColor.Orange, CubeColor.Green, CubeColor.Red],
-        [CubeColor.Blue, CubeColor.Red, CubeColor.Green, CubeColor.Orange],
-        [CubeColor.Blue, CubeColor.Red, CubeColor.Orange, CubeColor.Green],
-        [CubeColor.Blue, CubeColor.Green, CubeColor.Orange, CubeColor.Red],
-        [CubeColor.Blue, CubeColor.Green, CubeColor.Red, CubeColor.Orange],
-    ];
-
     /// <summary>
     /// Solves White Cross on the cube.
     /// </summary>
@@ -170,7 +139,7 @@ public static class WhiteCrossSolver
     {
         List<List<CubeMove>> solutions = [];
 
-        foreach (var colorOrder in _edgeSolvingOrders)
+        foreach (var colorOrder in ColorOrders.EdgeSolvingOrders)
         {
             var solution = GetSolvingCrossMovesForOrder(cube, colorOrder);
             solutions.Add(solution);
