@@ -1,4 +1,4 @@
-﻿namespace SolveCuber.Solver.F2L.Positioning;
+﻿namespace SolveCuber.Solver.Common;
 
 internal enum PieceLocation
 {
