@@ -172,7 +172,7 @@ internal static partial class F2LSolutions
 
             internal static class EdgeBackLeft
             {
-                public static List<CubeMove> ZFacesSameColor = [CubeMove.y_, CubeMove.U2, CubeMove.F, CubeMove.R_, CubeMove.U, CubeMove.R, CubeMove.F_];
+                public static List<CubeMove> ZFacesSameColor = [CubeMove.y_, CubeMove.U2, CubeMove.F, CubeMove.U2, CubeMove.F_, CubeMove.R_, CubeMove.U, CubeMove.R];
                 public static List<CubeMove> ZFacesDifferentColor = [CubeMove.y_, CubeMove.R_, CubeMove.U, CubeMove.R, CubeMove.U_, CubeMove.R_, CubeMove.U_, CubeMove.R, CubeMove.L_, CubeMove.U2, CubeMove.L];
             }
         }

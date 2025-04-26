@@ -2,20 +2,34 @@
 using SolveCuber.CubeModel;
 using SolveCuber.CubeModel.Models;
 using SolveCuber.Solver.Common;
+using SolveCuber.Solver.F2L;
 
 namespace SolveCuber.Solver.OLL;
 
 public static class OLLExecuter
 {
+    /// <summary>
+    /// Orients top layer of the cube yellow stickers up if first two layers of the cube are solved.
+    /// </summary>
+    /// <param name="cube">Cube you want to orient top layer on</param>
+    /// <returns>Sequence of moves that orients top layer pieces.</returns>
+    /// <exception cref="RubiksCubeException"></exception>
     public static List<CubeMove> ExecuteOLL(Cube cube)
     {
+        var cubeRotations = CubeOrienter.OrientCube(cube, CubeColor.Yellow);
+
+        if (!F2LSolver.IsF2lSolved(cube))
+        {
+            throw new RubiksCubeException("You execute the OLL if first two layers of the cube are not solved.");
+        }
+
         var topLayerOrientations = YellowPiecesPositioningHelper.GetYellowPiecesFaceAxis(cube);
 
         var algorithm = GetOLLAlgorithm(topLayerOrientations, cube);
 
         cube.ExecuteAlgorithm(algorithm);
 
-        return algorithm;
+        return MoveOptimizer.OptimizeMoves([.. cubeRotations, .. algorithm]);
     }
 
     private static List<CubeMove> GetOLLAlgorithm(FaceAxis[,] topLayerOrientations, Cube cube)
@@ -38,7 +52,7 @@ public static class OLLExecuter
 
             if (setUpMoves.Count > 4)
             {
-                throw new Exception("OLL case not found");
+                throw new RubiksCubeException("OLL case not found");
             }
         }
 

@@ -4,6 +4,7 @@ using SolveCuber.CubeModel.Models;
 using SolveCuber.Solver.Common;
 using SolveCuber.Solver.F2L.Positioning.Corners;
 using SolveCuber.Solver.F2L.Positioning.Edges;
+using SolveCuber.Solver.WhiteCross;
 
 namespace SolveCuber.Solver.F2L;
 
@@ -42,8 +43,21 @@ public static class F2LSolver
         [CubeColor.Blue, CubeColor.Green, CubeColor.Red, CubeColor.Orange],
     ];
 
+    /// <summary>
+    /// Solves first two leayers of the cube if the white cross is solved.
+    /// </summary>
+    /// <param name="cube">Cube you want to solve the white cross on</param>
+    /// <returns>Sequence of moves that solves the first two layers.</returns>
+    /// <exception cref="RubiksCubeException"></exception>
     public static List<CubeMove> SolveF2L(Cube cube)
     {
+        var cubeRotations = CubeOrienter.OrientCube(cube, CubeColor.Yellow);
+
+        if (!WhiteCrossSolver.IsCrossSolved(cube))
+        {
+            throw new RubiksCubeException("You can't solve the first two layers if white cross is not solved.");
+        }
+
         if (IsF2lSolved(cube))
         {
             return [];
@@ -53,7 +67,20 @@ public static class F2LSolver
 
         cube.ExecuteAlgorithm(solutionWithLeastMoves);
 
-        return solutionWithLeastMoves;
+        return MoveOptimizer.OptimizeMoves([.. cubeRotations, .. solutionWithLeastMoves]);
+    }
+
+    internal static bool IsF2lSolved(Cube cube)
+    {
+        var cornersData = CornerPositionHelper.LocateCorners(cube);
+        var edgesData = EdgePositionHelper.LocateEdges(cube);
+
+        var frontFaceCenterColor = cube.Front.Face[1, 1];
+
+        return IsPairInCorrectPlace(cornersData.GreenOrange, edgesData.GreenOrange, CubeColor.Green, frontFaceCenterColor)
+            && IsPairInCorrectPlace(cornersData.OrangeBlue, edgesData.OrangeBlue, CubeColor.Orange, frontFaceCenterColor)
+            && IsPairInCorrectPlace(cornersData.BlueRed, edgesData.BlueRed, CubeColor.Blue, frontFaceCenterColor)
+            && IsPairInCorrectPlace(cornersData.RedGreen, edgesData.RedGreen, CubeColor.Red, frontFaceCenterColor);
     }
 
     private static List<CubeMove> GetSolutionWithLeastMoves(Cube cube)
@@ -186,19 +213,6 @@ public static class F2LSolver
 
             _ => throw new NotImplementedException()
         };
-    }
-
-    private static bool IsF2lSolved(Cube cube)
-    {
-        var cornersData = CornerPositionHelper.LocateCorners(cube);
-        var edgesData = EdgePositionHelper.LocateEdges(cube);
-
-        var frontFaceCenterColor = cube.Front.Face[1, 1];
-
-        return IsPairInCorrectPlace(cornersData.GreenOrange, edgesData.GreenOrange, CubeColor.Green, frontFaceCenterColor)
-            && IsPairInCorrectPlace(cornersData.OrangeBlue, edgesData.OrangeBlue, CubeColor.Orange, frontFaceCenterColor)
-            && IsPairInCorrectPlace(cornersData.BlueRed, edgesData.BlueRed, CubeColor.Blue, frontFaceCenterColor)
-            && IsPairInCorrectPlace(cornersData.RedGreen, edgesData.RedGreen, CubeColor.Red, frontFaceCenterColor);
     }
 
     private static bool IsPairInCorrectPlace(WhiteCornerPosition cornerPosition, NonYellowEdgePosition edgePosition, CubeColor firstColor, CubeColor frontFaceCenterColor)

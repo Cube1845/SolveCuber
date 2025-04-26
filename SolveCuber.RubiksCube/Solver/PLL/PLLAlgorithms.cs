@@ -63,7 +63,7 @@ internal static class PLLAlgorithms
 
     public static List<CubeMove> Y = [CubeMove.F, CubeMove.R, CubeMove.U_, CubeMove.R_, CubeMove.U_, CubeMove.R, CubeMove.U, CubeMove.R_, CubeMove.F_, CubeMove.R, CubeMove.U, CubeMove.R_, CubeMove.U_, CubeMove.R_, CubeMove.F, CubeMove.R, CubeMove.F_];
 
-    public static List<CubeMove> H = [CubeMove.M2, CubeMove.U, CubeMove.M2, CubeMove.U2, CubeMove.M2, CubeMove.U, CubeMove.M2];
+    public static List<CubeMove> H = [CubeMove.M2, CubeMove.U_, CubeMove.M2, CubeMove.U2, CubeMove.M2, CubeMove.U_, CubeMove.M2];
 
     public static List<CubeMove> Ua = [CubeMove.M2, CubeMove.U, CubeMove.M, CubeMove.U2, CubeMove.M_, CubeMove.U, CubeMove.M2];
     public static List<CubeMove> Ub = [CubeMove.M2, CubeMove.U_, CubeMove.M, CubeMove.U2, CubeMove.M_, CubeMove.U_, CubeMove.M2];
