@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolveCuber", "SolveCuber.cs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolveCuber.Playground", "..\SolveCuber.Playground\SolveCuber.Playground.csproj", "{8A59CAFB-AE57-42D6-A8A9-B39D0D00B908}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolveCuber.UnitTests", "..\SolveCuber.UnitTests\SolveCuber.UnitTests.csproj", "{9939420C-3A7C-456D-9A83-5E2D66401707}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +25,16 @@ Global
 		{8A59CAFB-AE57-42D6-A8A9-B39D0D00B908}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A59CAFB-AE57-42D6-A8A9-B39D0D00B908}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A59CAFB-AE57-42D6-A8A9-B39D0D00B908}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9939420C-3A7C-456D-9A83-5E2D66401707}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9939420C-3A7C-456D-9A83-5E2D66401707}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9939420C-3A7C-456D-9A83-5E2D66401707}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9939420C-3A7C-456D-9A83-5E2D66401707}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9939420C-3A7C-456D-9A83-5E2D66401707} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8F6398D5-3B9F-43B2-8096-22924EF01680}
