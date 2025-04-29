@@ -1,7 +1,7 @@
 ﻿using SolveCuber.Common;
 using SolveCuber.CubeModel;
 
-namespace SolveCuber.UnitTests;
+namespace SolveCuber.UnitTests.HelperClass;
 
 public class MoveOptimizerTests
 {

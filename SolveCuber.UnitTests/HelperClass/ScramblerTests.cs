@@ -1,7 +1,7 @@
 ﻿using SolveCuber.CubeModel.Models;
 using SolveCuber.Scramble;
 
-namespace SolveCuber.UnitTests;
+namespace SolveCuber.UnitTests.HelperClass;
 
 public class ScramblerTests
 {
