@@ -39,10 +39,14 @@ public static class F2LSolver
 
     internal static bool IsF2lSolved(Cube cube)
     {
-        var cornersData = CornerPositionHelper.LocateCorners(cube);
-        var edgesData = EdgePositionHelper.LocateEdges(cube);
+        var cubeCopy = cube.DeepCopy();
 
-        var frontFaceCenterColor = cube.Front.Face[1, 1];
+        var cubeRotations = CubeOrienter.OrientCube(cubeCopy, CubeColor.Yellow);
+
+        var cornersData = CornerPositionHelper.LocateCorners(cubeCopy);
+        var edgesData = EdgePositionHelper.LocateEdges(cubeCopy);
+
+        var frontFaceCenterColor = cubeCopy.Front.Face[1, 1];
 
         return IsPairInCorrectPlace(cornersData.GreenOrange, edgesData.GreenOrange, CubeColor.Green, frontFaceCenterColor)
             && IsPairInCorrectPlace(cornersData.OrangeBlue, edgesData.OrangeBlue, CubeColor.Orange, frontFaceCenterColor)

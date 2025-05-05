@@ -6,8 +6,6 @@ namespace SolveCuber.UnitTests.Solver.WhiteCross;
 
 public class WhiteCrossSolverTests
 {
-    private readonly List<CubeMove> _scramble = [CubeMove.U, CubeMove.R_, CubeMove.B, CubeMove.L, CubeMove.B, CubeMove.L, CubeMove.D2, CubeMove.R_, CubeMove.L2, CubeMove.F2, CubeMove.U, CubeMove.B, CubeMove.L_, CubeMove.B_, CubeMove.R, CubeMove.L2, CubeMove.F, CubeMove.B, CubeMove.D, CubeMove.B, CubeMove.D2, CubeMove.F2, CubeMove.B2, CubeMove.R_, CubeMove.U];
-
     [Fact]
     public void IsCrossSolved_ShouldReturnTrue_WhenAllEdgesInCorrectPlace()
     {
@@ -22,7 +20,7 @@ public class WhiteCrossSolverTests
     public void IsCrossSolved_ShouldReturnFalse_WhenAnyEdgeIncorrect()
     {
         Cube cube = new();
-        cube.ExecuteAlgorithm(_scramble);
+        cube.ExecuteAlgorithm(TestScrambles.NoCrossScramble);
 
         var result = WhiteCrossSolver.IsCrossSolved(cube);
 
@@ -43,7 +41,7 @@ public class WhiteCrossSolverTests
     public void SolveCross_ShouldReturnMoves_WhenCrossIsNotSolved()
     {
         Cube cube = new();
-        cube.ExecuteAlgorithm(_scramble);
+        cube.ExecuteAlgorithm(TestScrambles.NoCrossScramble);
 
         var result = WhiteCrossSolver.SolveCross(cube);
 
@@ -55,7 +53,7 @@ public class WhiteCrossSolverTests
     public void SolveCross_ShouldWorkRegardlessOfInitialOrientation()
     {
         Cube cube = new();
-        cube.ExecuteAlgorithm([.. _scramble, CubeMove.x2, CubeMove.y_]);
+        cube.ExecuteAlgorithm([.. TestScrambles.NoCrossScramble, CubeMove.x2, CubeMove.y_]);
 
         var result = WhiteCrossSolver.SolveCross(cube);
 
