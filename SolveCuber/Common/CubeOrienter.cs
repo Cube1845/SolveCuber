@@ -1,8 +1,7 @@
-﻿using SolveCuber.Common;
-using SolveCuber.CubeModel;
+﻿using SolveCuber.CubeModel;
 using SolveCuber.CubeModel.Models;
 
-namespace SolveCuber.Solver.Common;
+namespace SolveCuber.Common;
 
 internal static class CubeOrienter
 {
@@ -41,6 +40,11 @@ internal static class CubeOrienter
         var yRotationMoves = RotateUntil(cubeCopy, CubeMove.y, () => cubeCopy.Front.Face[1, 1] == targetFrontColor);
         var zRotationMoves = RotateUntil(cubeCopy, CubeMove.z, () => cubeCopy.Up.Face[1, 1] == targetUpColor);
 
+        if (CheckForCubeException([xRotationMoves, yRotationMoves, zRotationMoves]))
+        {
+            throw new RubiksCubeException("Cube is not valid");
+        }
+
         var optimizedRotations = MoveOptimizer.OptimizeMoves
         ([
             .. xRotationMoves ?? [],
@@ -53,15 +57,20 @@ internal static class CubeOrienter
         return optimizedRotations;
     }
 
+    private static bool CheckForCubeException(List<List<CubeMove>?> rotationSequences)
+    {
+        return rotationSequences.Where(s => s is null).Count() >= 2;
+    }
+
     private static bool AreColorsIncorrect(CubeColor targetFrontColor, CubeColor targetUpColor)
     {
         List<CubeColor> HotOppositeColors = [CubeColor.Red, CubeColor.Orange];
         List<CubeColor> ColdOppositeColors = [CubeColor.Blue, CubeColor.Green];
         List<CubeColor> NeutralOppositeColors = [CubeColor.White, CubeColor.Yellow];
 
-        return (HotOppositeColors.Contains(targetFrontColor) && HotOppositeColors.Contains(targetUpColor)) ||
-            (ColdOppositeColors.Contains(targetFrontColor) && ColdOppositeColors.Contains(targetUpColor)) ||
-            (NeutralOppositeColors.Contains(targetFrontColor) && NeutralOppositeColors.Contains(targetUpColor));
+        return HotOppositeColors.Contains(targetFrontColor) && HotOppositeColors.Contains(targetUpColor) ||
+            ColdOppositeColors.Contains(targetFrontColor) && ColdOppositeColors.Contains(targetUpColor) ||
+            NeutralOppositeColors.Contains(targetFrontColor) && NeutralOppositeColors.Contains(targetUpColor);
     }
 
     private static List<CubeMove>? RotateUntil(Cube cube, CubeMove rotation, Func<bool> compare)

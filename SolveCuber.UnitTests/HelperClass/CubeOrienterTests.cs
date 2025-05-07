@@ -1,7 +1,6 @@
 ﻿using SolveCuber.Common;
 using SolveCuber.CubeModel.Models;
 using SolveCuber.CubeModel;
-using SolveCuber.Solver.Common;
 
 namespace SolveCuber.UnitTests.HelperClass;
 
