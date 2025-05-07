@@ -50,6 +50,24 @@ internal static class MoveOptimizer
         return optimizedMoves;
     }
 
+    private static string GetRotationAxis(CubeMove move)
+    {
+        string moveStr = move.ToString();
+        if (moveStr.StartsWith("x")) return "x";
+        if (moveStr.StartsWith("y")) return "y";
+        if (moveStr.StartsWith("z")) return "z";
+        return "";
+    }
+
+    private static bool IsMoveAffectedByRotation(CubeMove move, string rotationAxis)
+    {
+        var moveType = GetMoveType(move);
+
+        return (rotationAxis == "y" && (moveType == "R" || moveType == "L" || moveType == "F" || moveType == "B")) ||
+               (rotationAxis == "x" && (moveType == "U" || moveType == "D" || moveType == "F" || moveType == "B")) ||
+               (rotationAxis == "z" && (moveType == "U" || moveType == "D" || moveType == "R" || moveType == "L"));
+    }
+
     private static List<CubeMove> OptimizeRotationPairs(List<CubeMove> moves)
     {
         var optimized = new List<CubeMove>();
@@ -63,16 +81,25 @@ internal static class MoveOptimizer
                 var middleMove = moves[i + 1];
                 var rotation2 = moves[i + 2];
 
-                if (GetMoveType(rotation1) == GetMoveType(rotation2) &&
-                    !DoesMoveInterfereWithRotation(middleMove, rotation1))
+                if (GetRotationAxis(rotation1) == GetRotationAxis(rotation2))
                 {
-                    var combinedRotation = CombineMoves(rotation1, rotation2);
-                    if (combinedRotation != null)
+                    if (!IsMoveAffectedByRotation(middleMove, GetRotationAxis(rotation1)))
                     {
-                        optimized.Add(combinedRotation.Value);
-                        optimized.Add(middleMove);
-                        i += 3;
-                        continue;
+                        var combinedRotation = CombineMoves(rotation1, rotation2);
+
+                        if (combinedRotation.HasValue)
+                        {
+                            optimized.Add(combinedRotation.Value);
+                            optimized.Add(middleMove);
+                            i += 3;
+                            continue;
+                        }
+                        else
+                        {
+                            optimized.Add(middleMove);
+                            i += 3;
+                            continue;
+                        }
                     }
                 }
             }
