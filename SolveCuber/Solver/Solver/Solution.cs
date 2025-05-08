@@ -2,7 +2,7 @@
 
 namespace SolveCuber.Solver.Solver;
 
-public class Solve
+public class Solution
 {
     public List<CubeMove> Cross { get; init; } = [];
     public List<CubeMove> F2L { get; init; } = [];

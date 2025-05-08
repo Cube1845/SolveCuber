@@ -11,8 +11,8 @@ var cube = CubeProvider.GetScrambledCube(out var scramble);
 DisplayMoves(scramble);
 CubeDisplayer.DisplayCube(cube);
 
-var solve = CubeSolver.SolveCube(cube);
-CubeDisplayer.DisplaySolve(solve);
+var solution = CubeSolver.SolveCube(cube);
+CubeDisplayer.DisplaySolve(solution);
 
 void DisplayMoves(List<CubeMove> moves)
 {

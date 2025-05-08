@@ -8,7 +8,7 @@ public static class CubeDisplayer
 {
     private static readonly string _empty = "  ";
 
-    public static void DisplaySolve(Solve solve)
+    public static void DisplaySolve(Solution solve)
     {
         Console.WriteLine("Solve: \n");
 

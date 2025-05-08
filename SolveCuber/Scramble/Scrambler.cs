@@ -4,9 +4,9 @@ using SolveCuber.CubeModel.Models;
 namespace SolveCuber.Scramble;
 public static class Scrambler
 {
-    private static readonly int _scrambleMovesEnumLength = 18;
+    private const int _scrambleMovesEnumLength = 18;
 
-    private static readonly int _scrambleLength = 25;
+    private const int _scrambleLength = 25;
 
     public static List<CubeMove> ScrambleCube(Cube cube)
     {
@@ -17,7 +17,7 @@ public static class Scrambler
         return scramble;
     }
 
-    public static List<CubeMove> GenerateScramble(int length)
+    public static List<CubeMove> GenerateScramble(int length = _scrambleLength)
     {
         List<CubeMove> scramble = [];
         CubeMove? previousMove = null;
