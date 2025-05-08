@@ -1,12 +1,10 @@
 ﻿using SolveCuber.CubeModel;
-using SolveCuber.CubeModel.Models;
 using SolveCuber.Playground;
-using SolveCuber.Scramble;
+using SolveCuber.Provider;
 using SolveCuber.Solver.Solver;
 
-Cube cube = new();
+var cube = CubeProvider.GetScrambledCube(out var scramble);
 
-var scramble = Scrambler.ScrambleCube(cube);
 //List<CubeMove> scramble = [];
 //cube.ExecuteAlgorithm(scramble);
 

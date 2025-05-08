@@ -1,11 +1,28 @@
 ﻿using SolveCuber.Common;
 using SolveCuber.CubeModel;
 using SolveCuber.CubeModel.Models;
+using SolveCuber.Solver.Solver;
 
 namespace SolveCuber.Provider;
 
 internal static class CubeValidator
 {
+    public static bool ValidateCubeSolve(Cube cube)
+    {
+        var cubeCopy = cube.DeepCopy();
+
+        try
+        {
+            CubeSolver.SolveCube(cubeCopy);
+        }
+        catch
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     public static bool ValidateCubeColors(Cube cube)
     {
         List<CubeColor> flattenedCubeColors = FlattenCubeColors(cube);
@@ -23,6 +40,32 @@ internal static class CubeValidator
         }
 
         return true;
+    }
+
+    public static bool ValidateCenters(Cube cube)
+    {
+        var centerColorsValid = ValidateCenterColors(cube);
+
+        if (!centerColorsValid)
+        {
+            return false;
+        }
+
+        var cubeCopy = cube.DeepCopy();
+
+        try
+        {
+            CubeOrienter.OrientCube(cubeCopy, CubeColor.Green, CubeColor.White);
+        }
+        catch
+        {
+            return false;
+        }
+
+        return cubeCopy.Left.Face[1, 1] == CubeColor.Orange &&
+            cubeCopy.Right.Face[1, 1] == CubeColor.Red &&
+            cubeCopy.Back.Face[1, 1] == CubeColor.Blue &&
+            cubeCopy.Down.Face[1, 1] == CubeColor.Yellow;
     }
 
     private static List<CubeColor> FlattenCubeColors(Cube cube)
@@ -51,32 +94,6 @@ internal static class CubeValidator
         }
 
         return flattenedFaceColors;
-    }
-
-    public static bool ValidateCenters(Cube cube)
-    {
-        var centerColorsValid = ValidateCenterColors(cube);
-
-        if (!centerColorsValid)
-        {
-            return false;
-        }
-
-        var cubeCopy = cube.DeepCopy();
-
-        try
-        {
-            CubeOrienter.OrientCube(cubeCopy, CubeColor.White, CubeColor.Green);
-        }
-        catch
-        {
-            return false;
-        }
-
-        return cubeCopy.Left.Face[1, 1] == CubeColor.Orange &&
-            cubeCopy.Right.Face[1, 1] == CubeColor.Red &&
-            cubeCopy.Back.Face[1, 1] == CubeColor.Blue &&
-            cubeCopy.Down.Face[1, 1] == CubeColor.Yellow;
     }
 
     private static bool ValidateCenterColors(Cube cube)

@@ -1,13 +1,33 @@
 ﻿namespace SolveCuber.CubeModel.Models;
 
-public partial struct Cube()
+public partial struct Cube
 {
-    public CubeFace Up { get; private set; } = new CubeFace(CubeColor.White);
-    public CubeFace Down { get; private set; } = new CubeFace(CubeColor.Yellow);
-    public CubeFace Front { get; private set; } = new CubeFace(CubeColor.Green);
-    public CubeFace Back { get; private set; } = new CubeFace(CubeColor.Blue);
-    public CubeFace Right { get; private set; } = new CubeFace(CubeColor.Red);
-    public CubeFace Left { get; private set; } = new CubeFace(CubeColor.Orange);
+    public CubeFace Up { get; private set; }
+    public CubeFace Down { get; private set; }
+    public CubeFace Front { get; private set; }
+    public CubeFace Back { get; private set; }
+    public CubeFace Right { get; private set; }
+    public CubeFace Left { get; private set; }
+
+    public Cube()
+    {
+        Up = new CubeFace(CubeColor.White);
+        Down = new CubeFace(CubeColor.Yellow);
+        Front = new CubeFace(CubeColor.Green);
+        Back = new CubeFace(CubeColor.Blue);
+        Right = new CubeFace(CubeColor.Red);
+        Left = new CubeFace(CubeColor.Orange);
+    }
+
+    internal Cube(CubeColor[,] up, CubeColor[,] down, CubeColor[,] front, CubeColor[,] back, CubeColor[,] right, CubeColor[,] left)
+    {
+        Up = new CubeFace(up);
+        Down = new CubeFace(down);
+        Front = new CubeFace(front);
+        Back = new CubeFace(back);
+        Right = new CubeFace(right);
+        Left = new CubeFace(left);
+    }
 
     internal Cube DeepCopy()
     {

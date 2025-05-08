@@ -16,6 +16,10 @@ public struct CubeFace
             }
         }
     }
+    public CubeFace(CubeColor[,] face)
+    {
+        Face = face;
+    }
 
     internal CubeFace DeepCopy()
     {
