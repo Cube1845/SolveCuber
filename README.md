@@ -1,6 +1,9 @@
+EN: SolveCuber is a .NET library that solves the Rubiks Cube using CFOP method. | 
+PL: SolveCuber to biblioteka .NET rozwiązująca kostkę Rubika metodą CFOP.
+
 # SolveCuber
 
-SolveCuber is a simple .NET library that solves the Rubiks Cube using CFOP method.
+SolveCuber is a .NET library that solves the Rubiks Cube using CFOP method.
 
 ## Cube Object / CubeProvider
 
